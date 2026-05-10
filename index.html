@@ -3,966 +3,865 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <meta name="theme-color" content="#C0392B" />
+  <meta name="theme-color" content="#FF6B6B" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Mandarin App" />
   <title>Mandarin App</title>
-  <link rel="manifest" href="manifest.json" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --red: #C0392B;
-      --red-dark: #922B21;
-      --red-light: #E74C3C;
-      --gold: #D4AC0D;
-      --gold-light: #F4D03F;
-      --bg: #0D0D0D;
-      --bg2: #161616;
-      --bg3: #1E1E1E;
-      --surface: #242424;
-      --border: rgba(255,255,255,0.08);
-      --text: #F5F0E8;
-      --text2: #A89880;
-      --green: #27AE60;
-      --blue: #2980B9;
-      --radius: 16px;
+      --coral:#FF6B6B; --orange:#FF9F43; --yellow:#FECA57;
+      --mint:#1DD1A1; --sky:#54A0FF; --purple:#A29BFE; --pink:#FD79A8;
+      --bg:#F0F4FF; --white:#FFFFFF; --dark:#2D3561; --dark2:#5A6A9A;
+      --border:rgba(45,53,97,0.10); --shadow:0 4px 20px rgba(45,53,97,0.12);
+      --radius:20px;
     }
+    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+    body{background:var(--bg);color:var(--dark);font-family:'Nunito',sans-serif;min-height:100vh;overflow-x:hidden;}
 
-    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    /* NAV */
+    .nav{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:2px solid var(--border);display:flex;justify-content:space-around;align-items:center;padding:8px 0 max(8px,env(safe-area-inset-bottom));z-index:100;box-shadow:0 -4px 20px rgba(45,53,97,0.08);}
+    .nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;color:var(--dark2);font-size:10px;font-family:'Nunito',sans-serif;font-weight:700;padding:4px 12px;border-radius:14px;transition:all 0.2s;}
+    .nav-btn.active{color:var(--coral);}
+    .nav-icon{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;transition:all 0.2s;}
+    .nav-btn.active .nav-icon{background:rgba(255,107,107,0.15);}
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+    /* SCREENS */
+    .screen{display:none;padding:0 0 90px;min-height:100vh;}
+    .screen.active{display:block;}
 
-    /* ──────────── NAV ──────────── */
-    .nav {
-      position: fixed; bottom: 0; left: 0; right: 0;
-      background: rgba(13,13,13,0.96);
-      backdrop-filter: blur(20px);
-      border-top: 1px solid var(--border);
-      display: flex; justify-content: space-around; align-items: center;
-      padding: 10px 0 max(10px, env(safe-area-inset-bottom));
-      z-index: 100;
-    }
-    .nav-btn {
-      display: flex; flex-direction: column; align-items: center; gap: 4px;
-      background: none; border: none; cursor: pointer;
-      color: var(--text2); font-size: 11px; font-family: 'DM Sans', sans-serif;
-      padding: 6px 16px; border-radius: 12px;
-      transition: all 0.2s;
-    }
-    .nav-btn.active { color: var(--gold); }
-    .nav-btn .icon { font-size: 22px; line-height: 1; }
+    /* HERO HEADERS */
+    .hero{padding:56px 24px 30px;border-radius:0 0 32px 32px;position:relative;overflow:hidden;}
+    .hero-tag{font-size:12px;font-weight:700;color:rgba(255,255,255,0.85);letter-spacing:1px;margin-bottom:4px;}
+    .hero-title{font-size:30px;font-weight:900;color:#fff;line-height:1.1;margin-bottom:4px;}
+    .hero-sub{font-size:13px;color:rgba(255,255,255,0.8);font-weight:600;}
+    .hero-deco{position:absolute;right:-10px;bottom:-14px;font-family:'Noto Serif SC',serif;font-size:110px;color:rgba(255,255,255,0.12);line-height:1;pointer-events:none;}
+    .hero-home{background:linear-gradient(135deg,var(--coral),var(--orange));}
+    .hero-fc  {background:linear-gradient(135deg,var(--purple),var(--pink));}
+    .hero-quiz{background:linear-gradient(135deg,var(--mint),var(--sky));}
+    .hero-mat {background:linear-gradient(135deg,var(--sky),var(--purple));}
+    .hero-prof{background:linear-gradient(135deg,var(--pink),var(--purple));}
 
-    /* ──────────── SCREENS ──────────── */
-    .screen { display: none; padding: 0 0 90px; min-height: 100vh; }
-    .screen.active { display: block; }
+    /* CARDS & SECTIONS */
+    .section-title{font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--dark2);padding:0 20px;margin:20px 0 10px;}
+    .card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);}
 
-    /* ──────────── HOME ──────────── */
-    .home-hero {
-      background: linear-gradient(160deg, var(--red-dark) 0%, #0D0D0D 60%);
-      padding: 60px 24px 40px;
-      position: relative; overflow: hidden;
-    }
-    .home-hero::before {
-      content: '中';
-      position: absolute; right: -20px; top: -20px;
-      font-family: 'Noto Serif SC', serif;
-      font-size: 200px; color: rgba(255,255,255,0.04);
-      line-height: 1;
-    }
-    .hero-label {
-      font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
-      color: var(--gold); font-weight: 500; margin-bottom: 8px;
-    }
-    .hero-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 36px; font-weight: 900; line-height: 1.1;
-      margin-bottom: 8px;
-    }
-    .hero-sub { color: var(--text2); font-size: 14px; }
+    /* HOME STATS */
+    .stats-row{display:flex;gap:12px;padding:18px 20px 4px;}
+    .stat-card{flex:1;background:var(--white);border-radius:var(--radius);padding:14px 10px;text-align:center;box-shadow:var(--shadow);}
+    .stat-num{font-size:22px;font-weight:900;}
+    .stat-lbl{font-size:10px;font-weight:700;color:var(--dark2);margin-top:2px;text-transform:uppercase;letter-spacing:.5px;}
 
-    .stats-row {
-      display: flex; gap: 12px; padding: 20px 24px;
-    }
-    .stat-card {
-      flex: 1; background: var(--surface);
-      border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 16px 12px; text-align: center;
-    }
-    .stat-num { font-size: 24px; font-weight: 700; color: var(--gold); }
-    .stat-lbl { font-size: 11px; color: var(--text2); margin-top: 2px; }
+    /* HOME MENU */
+    .menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 20px;}
+    .menu-card{border-radius:var(--radius);padding:20px 16px;cursor:pointer;transition:all 0.2s;text-align:left;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+    .menu-card:active{transform:scale(0.96);}
+    .menu-card-deco{position:absolute;right:-6px;bottom:-6px;font-size:52px;opacity:0.18;line-height:1;}
+    .mc-icon{font-size:28px;margin-bottom:10px;}
+    .mc-title{font-size:15px;font-weight:800;color:#fff;margin-bottom:3px;}
+    .mc-desc{font-size:11px;color:rgba(255,255,255,0.8);font-weight:600;}
+    .mc-coral{background:linear-gradient(135deg,#FF6B6B,#EE5A24);}
+    .mc-gold {background:linear-gradient(135deg,#FECA57,#FF9F43);}
+    .mc-mint {background:linear-gradient(135deg,#1DD1A1,#10AC84);}
+    .mc-sky  {background:linear-gradient(135deg,#54A0FF,#2E86DE);}
 
-    .section-title {
-      font-size: 13px; font-weight: 600; letter-spacing: 2px;
-      text-transform: uppercase; color: var(--text2);
-      padding: 0 24px; margin-bottom: 12px;
-    }
+    /* WOTD */
+    .wotd-card{margin:12px 20px 0;padding:20px;display:flex;gap:16px;align-items:center;}
+    .wotd-hanzi{font-family:'Noto Serif SC',serif;font-size:52px;line-height:1;color:var(--coral);}
+    .wotd-pin{font-size:13px;color:var(--dark2);font-weight:700;}
+    .wotd-art{font-size:18px;font-weight:800;margin-top:2px;}
 
-    .menu-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 12px; padding: 0 24px 24px;
-    }
-    .menu-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 20px 16px;
-      cursor: pointer; transition: all 0.2s; text-align: left;
-    }
-    .menu-card:active { transform: scale(0.97); }
-    .menu-card .mc-icon { font-size: 32px; margin-bottom: 10px; }
-    .menu-card .mc-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
-    .menu-card .mc-desc { font-size: 12px; color: var(--text2); }
-    .menu-card.red { border-color: rgba(192,57,43,0.4); background: rgba(192,57,43,0.1); }
-    .menu-card.gold { border-color: rgba(212,172,13,0.4); background: rgba(212,172,13,0.08); }
-    .menu-card.green { border-color: rgba(39,174,96,0.4); background: rgba(39,174,96,0.08); }
-    .menu-card.blue { border-color: rgba(41,128,185,0.4); background: rgba(41,128,185,0.08); }
+    /* AUDIO BUTTON */
+    .audio-btn{display:inline-flex;align-items:center;gap:5px;margin-top:8px;background:var(--bg);border:2px solid var(--border);border-radius:99px;padding:5px 14px;font-size:12px;font-weight:700;color:var(--dark2);cursor:pointer;transition:all 0.2s;font-family:'Nunito',sans-serif;}
+    .audio-btn:active{background:var(--coral);color:#fff;border-color:var(--coral);}
 
-    /* ──────────── FLASHCARD ──────────── */
-    .fc-header {
-      background: linear-gradient(160deg, #1a0a00 0%, var(--bg) 70%);
-      padding: 50px 24px 24px;
-    }
-    .fc-title { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; }
-    .fc-sub { color: var(--text2); font-size: 13px; margin-top: 4px; }
+    /* PROGRESS BAR */
+    .prog-wrap{height:6px;background:rgba(45,53,97,0.1);margin:14px 20px 0;border-radius:99px;overflow:hidden;}
+    .prog-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--coral),var(--orange));transition:width .4s ease;}
+    .prog-label{text-align:center;color:var(--dark2);font-size:13px;font-weight:700;margin:8px 0;}
 
-    .fc-progress-bar {
-      height: 3px; background: var(--bg3);
-      margin: 16px 24px 0; border-radius: 99px; overflow: hidden;
-    }
-    .fc-progress-fill {
-      height: 100%; background: var(--gold);
-      border-radius: 99px; transition: width 0.4s ease;
-    }
+    /* FLASHCARD */
+    .fc-cats{display:flex;gap:8px;padding:14px 20px 4px;overflow-x:auto;scrollbar-width:none;}
+    .fc-cats::-webkit-scrollbar{display:none;}
+    .cat-pill{padding:7px 16px;border-radius:99px;font-size:12px;font-weight:800;white-space:nowrap;cursor:pointer;border:2px solid var(--border);background:var(--white);color:var(--dark2);transition:all .2s;font-family:'Nunito',sans-serif;}
+    .cat-pill.active{background:var(--dark);color:#fff;border-color:var(--dark);}
 
-    .fc-counter { text-align: center; color: var(--text2); font-size: 13px; margin: 12px 0; }
+    .fc-wrap{padding:0 20px;perspective:1000px;}
+    .fc-card{width:100%;min-height:270px;position:relative;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.23,1,.32,1);cursor:pointer;}
+    .fc-card.flipped{transform:rotateY(180deg);}
+    .fc-face{position:absolute;width:100%;min-height:270px;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 20px;text-align:center;}
+    .fc-front{background:var(--white);box-shadow:var(--shadow);}
+    .fc-back{background:linear-gradient(135deg,var(--purple),var(--pink));transform:rotateY(180deg);box-shadow:0 8px 30px rgba(162,155,254,0.35);}
+    .fc-hanzi{font-family:'Noto Serif SC',serif;font-size:86px;line-height:1;color:var(--dark);}
+    .fc-hint{font-size:12px;color:var(--dark2);margin-top:8px;font-weight:600;}
+    .fc-pinyin{font-size:22px;color:var(--yellow);font-weight:800;margin-bottom:6px;}
+    .fc-meaning{font-size:18px;font-weight:800;color:#fff;}
+    .fc-example{font-size:12px;color:rgba(255,255,255,0.8);margin-top:10px;font-style:italic;line-height:1.5;}
+    .fc-btns{display:flex;gap:12px;padding:16px 20px;}
+    .fc-btn{flex:1;padding:14px;border:none;border-radius:var(--radius);font-size:14px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s;}
+    .fc-btn:active{transform:scale(0.96);}
+    .fc-wrong{background:#FFF0F0;color:var(--coral);border:2px solid rgba(255,107,107,.3);}
+    .fc-correct{background:#F0FFF8;color:var(--mint);border:2px solid rgba(29,209,161,.3);}
 
-    .fc-card-wrap { padding: 0 24px; perspective: 1000px; }
-    .fc-card {
-      width: 100%; min-height: 260px;
-      position: relative; transform-style: preserve-3d;
-      transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-      cursor: pointer;
-    }
-    .fc-card.flipped { transform: rotateY(180deg); }
-    .fc-front, .fc-back {
-      position: absolute; width: 100%; min-height: 260px;
-      backface-visibility: hidden; -webkit-backface-visibility: hidden;
-      border-radius: var(--radius); display: flex;
-      flex-direction: column; align-items: center; justify-content: center;
-      padding: 30px 20px; text-align: center;
-    }
-    .fc-front {
-      background: var(--surface); border: 1px solid var(--border);
-    }
-    .fc-back {
-      background: linear-gradient(135deg, var(--red-dark), #8B0000);
-      transform: rotateY(180deg);
-    }
-    .fc-hanzi {
-      font-family: 'Noto Serif SC', serif;
-      font-size: 90px; line-height: 1; color: var(--text);
-      text-shadow: 0 4px 20px rgba(212,172,13,0.3);
-    }
-    .fc-tap-hint { font-size: 12px; color: var(--text2); margin-top: 16px; }
-    .fc-pinyin { font-size: 22px; color: var(--gold-light); font-weight: 500; margin-bottom: 8px; }
-    .fc-meaning { font-size: 18px; font-weight: 600; color: var(--text); }
-    .fc-example { font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 12px; font-style: italic; }
+    /* QUIZ */
+    .quiz-tabs{display:flex;gap:10px;padding:14px 20px 4px;}
+    .quiz-tab{flex:1;padding:10px 6px;border-radius:14px;font-size:12px;font-weight:800;cursor:pointer;text-align:center;background:var(--white);color:var(--dark2);border:2px solid var(--border);transition:all .2s;font-family:'Nunito',sans-serif;}
+    .quiz-tab.active{background:var(--dark);color:#fff;border-color:var(--dark);}
+    .quiz-status{display:flex;justify-content:space-between;align-items:center;padding:10px 20px 6px;}
+    .quiz-count{font-size:13px;font-weight:800;color:var(--dark2);}
+    .quiz-score-badge{font-size:13px;font-weight:800;color:var(--mint);background:#F0FFF8;padding:4px 12px;border-radius:99px;}
+    .quiz-q-box{margin:0 20px 14px;padding:26px 20px;text-align:center;}
+    .quiz-q-label{font-size:11px;color:var(--dark2);letter-spacing:2px;text-transform:uppercase;font-weight:800;margin-bottom:10px;}
+    .quiz-q-hanzi{font-family:'Noto Serif SC',serif;font-size:76px;line-height:1;color:var(--dark);}
+    .quiz-q-text{font-size:20px;font-weight:800;color:var(--dark);}
+    .quiz-q-pin{font-size:13px;color:var(--dark2);font-weight:700;margin-top:4px;}
+    .quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 20px;}
+    .quiz-opt{background:var(--white);border:2px solid var(--border);border-radius:16px;padding:16px 10px;font-size:14px;font-weight:800;cursor:pointer;text-align:center;transition:all .2s;font-family:'Nunito',sans-serif;color:var(--dark);box-shadow:0 2px 8px rgba(45,53,97,0.06);}
+    .quiz-opt-hanzi{font-family:'Noto Serif SC',serif;font-size:34px;line-height:1.2;}
+    .quiz-opt:active{transform:scale(0.97);}
+    .quiz-opt.correct{background:#F0FFF8;border-color:var(--mint);color:var(--mint);}
+    .quiz-opt.wrong{background:#FFF0F0;border-color:var(--coral);color:var(--coral);}
+    .quiz-next-wrap{padding:14px 20px;display:none;}
 
-    .fc-buttons { display: flex; gap: 12px; padding: 20px 24px; }
-    .fc-btn {
-      flex: 1; padding: 14px; border: none; border-radius: var(--radius);
-      font-size: 14px; font-weight: 600; cursor: pointer;
-      font-family: 'DM Sans', sans-serif; transition: all 0.15s;
-    }
-    .fc-btn:active { transform: scale(0.96); }
-    .fc-btn.wrong { background: rgba(192,57,43,0.2); color: #E74C3C; border: 1px solid rgba(192,57,43,0.4); }
-    .fc-btn.correct { background: rgba(39,174,96,0.2); color: #2ECC71; border: 1px solid rgba(39,174,96,0.4); }
-    .fc-btn.next { background: var(--gold); color: #000; }
+    /* RESULT */
+    .result-box{text-align:center;padding:50px 24px;}
+    .result-icon{font-size:64px;margin-bottom:12px;}
+    .result-score{font-size:52px;font-weight:900;color:var(--coral);}
+    .result-label{color:var(--dark2);font-size:15px;font-weight:700;margin-bottom:28px;}
 
-    .fc-category-select {
-      display: flex; gap: 8px; padding: 0 24px 16px; overflow-x: auto;
-      scrollbar-width: none;
-    }
-    .fc-category-select::-webkit-scrollbar { display: none; }
-    .cat-pill {
-      padding: 6px 14px; border-radius: 99px; font-size: 12px; font-weight: 500;
-      white-space: nowrap; cursor: pointer; border: 1px solid var(--border);
-      background: var(--surface); color: var(--text2); transition: all 0.2s;
-    }
-    .cat-pill.active { background: var(--gold); color: #000; border-color: var(--gold); }
+    /* BUTTONS */
+    .btn-primary{background:linear-gradient(135deg,var(--coral),var(--orange));color:#fff;border:none;padding:16px 32px;border-radius:var(--radius);font-size:16px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;box-shadow:0 4px 16px rgba(255,107,107,0.35);width:100%;display:block;}
+    .btn-primary:active{transform:scale(0.97);}
+    .btn-secondary{background:var(--white);color:var(--dark);border:2px solid var(--border);padding:14px 32px;border-radius:var(--radius);font-size:15px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;width:100%;display:block;margin-top:10px;}
+    .btn-secondary:active{transform:scale(0.97);}
 
-    /* ──────────── KUIS ──────────── */
-    .quiz-header {
-      background: linear-gradient(160deg, #001a0d 0%, var(--bg) 70%);
-      padding: 50px 24px 24px;
-    }
-    .quiz-title { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; }
+    /* MATERI */
+    .lesson-list{padding:0 20px;display:flex;flex-direction:column;gap:12px;}
+    .lesson-card{background:var(--white);border-radius:var(--radius);padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .2s;box-shadow:var(--shadow);}
+    .lesson-card:active{transform:scale(0.98);}
+    .lesson-icon{width:48px;height:48px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+    .lesson-info{flex:1;}
+    .lesson-name{font-size:15px;font-weight:800;}
+    .lesson-desc{font-size:12px;color:var(--dark2);font-weight:600;margin-top:2px;}
+    .lesson-arrow{color:var(--dark2);font-size:18px;font-weight:800;}
+    .ld-header{padding:56px 20px 24px;border-radius:0 0 32px 32px;display:flex;align-items:flex-start;gap:12px;}
+    .back-btn{background:rgba(255,255,255,.25);border:none;color:#fff;font-size:20px;cursor:pointer;padding:6px 12px;border-radius:12px;font-weight:800;font-family:'Nunito',sans-serif;}
+    .ld-label{font-size:11px;color:rgba(255,255,255,.75);letter-spacing:2px;text-transform:uppercase;font-weight:800;}
+    .ld-title{font-size:22px;font-weight:900;color:#fff;}
+    .vocab-list{padding:14px 20px;display:flex;flex-direction:column;gap:10px;}
+    .vocab-row{background:var(--white);border-radius:16px;padding:14px 16px;display:grid;grid-template-columns:60px 1fr auto;align-items:center;gap:8px;box-shadow:var(--shadow);}
+    .vocab-hanzi{font-family:'Noto Serif SC',serif;font-size:30px;color:var(--coral);}
+    .vocab-pin{font-size:12px;color:var(--dark2);font-weight:700;}
+    .vocab-arti{font-size:14px;font-weight:800;}
 
-    .quiz-q-box {
-      margin: 20px 24px; background: var(--surface);
-      border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 30px 20px; text-align: center;
-    }
-    .quiz-q-label { font-size: 12px; color: var(--text2); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
-    .quiz-q-hanzi { font-family: 'Noto Serif SC', serif; font-size: 72px; }
-    .quiz-q-text { font-size: 20px; font-weight: 600; }
+    /* PROFIL */
+    .profil-avatar{width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 12px;border:3px solid rgba(255,255,255,.4);}
+    .profil-name{font-size:22px;font-weight:900;color:#fff;text-align:center;}
+    .profil-level{color:rgba(255,255,255,.85);font-size:13px;font-weight:700;text-align:center;margin-top:4px;}
+    .ps-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:16px 20px 4px;}
+    .ps-card{background:var(--white);border-radius:var(--radius);padding:14px 8px;text-align:center;box-shadow:var(--shadow);}
+    .ps-val{font-size:22px;font-weight:900;color:var(--coral);}
+    .ps-lbl{font-size:10px;color:var(--dark2);font-weight:700;text-transform:uppercase;margin-top:2px;}
+    .profil-section{padding:0 20px 16px;}
+    .profil-item{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer;}
+    .profil-item-left{display:flex;align-items:center;gap:12px;}
+    .profil-item-ico{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;background:var(--bg);}
+    .profil-item-lbl{font-size:15px;font-weight:700;}
+    .profil-item-val{font-size:13px;color:var(--dark2);font-weight:700;}
 
-    .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 24px; }
-    .quiz-opt {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 16px 12px;
-      font-size: 15px; font-weight: 500; cursor: pointer;
-      text-align: center; transition: all 0.2s;
-      font-family: 'DM Sans', sans-serif;
-    }
-    .quiz-opt:active { transform: scale(0.97); }
-    .quiz-opt.correct { background: rgba(39,174,96,0.2); border-color: #27AE60; color: #2ECC71; }
-    .quiz-opt.wrong { background: rgba(192,57,43,0.2); border-color: var(--red); color: var(--red-light); }
-
-    .quiz-result {
-      text-align: center; padding: 60px 24px;
-    }
-    .quiz-result-icon { font-size: 64px; margin-bottom: 16px; }
-    .quiz-result-score { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 900; color: var(--gold); }
-    .quiz-result-label { color: var(--text2); font-size: 15px; margin-bottom: 32px; }
-    .btn-primary {
-      background: var(--gold); color: #000; border: none;
-      padding: 16px 32px; border-radius: var(--radius);
-      font-size: 16px; font-weight: 700; cursor: pointer;
-      font-family: 'DM Sans', sans-serif; transition: all 0.2s;
-    }
-    .btn-primary:active { transform: scale(0.97); }
-
-    /* ──────────── MATERI ──────────── */
-    .materi-header {
-      background: linear-gradient(160deg, #00101a 0%, var(--bg) 70%);
-      padding: 50px 24px 24px;
-    }
-    .materi-title { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; }
-
-    .lesson-list { padding: 0 24px; display: flex; flex-direction: column; gap: 12px; }
-    .lesson-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 16px;
-      display: flex; align-items: center; gap: 14px;
-      cursor: pointer; transition: all 0.2s;
-    }
-    .lesson-card:active { transform: scale(0.98); }
-    .lesson-num {
-      width: 44px; height: 44px; border-radius: 12px;
-      background: var(--bg3); display: flex; align-items: center; justify-content: center;
-      font-family: 'Noto Serif SC', serif; font-size: 20px; flex-shrink: 0;
-    }
-    .lesson-num.done { background: rgba(39,174,96,0.2); color: #2ECC71; }
-    .lesson-info { flex: 1; }
-    .lesson-name { font-size: 15px; font-weight: 600; }
-    .lesson-desc { font-size: 12px; color: var(--text2); margin-top: 2px; }
-    .lesson-arrow { color: var(--text2); font-size: 18px; }
-
-    /* ──────────── LESSON DETAIL ──────────── */
-    .lesson-detail { display: none; }
-    .lesson-detail.active { display: block; }
-    .ld-header {
-      background: linear-gradient(160deg, var(--red-dark) 0%, var(--bg) 70%);
-      padding: 50px 24px 24px;
-      display: flex; align-items: flex-start; gap: 12px;
-    }
-    .back-btn {
-      background: none; border: none; color: var(--text);
-      font-size: 24px; cursor: pointer; padding: 0; margin-top: 2px;
-    }
-    .ld-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 900; }
-    .vocab-table { padding: 16px 24px; display: flex; flex-direction: column; gap: 10px; }
-    .vocab-row {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 12px; padding: 14px 16px;
-      display: grid; grid-template-columns: 60px 1fr 1fr;
-      align-items: center; gap: 8px;
-    }
-    .vocab-hanzi { font-family: 'Noto Serif SC', serif; font-size: 28px; color: var(--gold); }
-    .vocab-pinyin { font-size: 13px; color: var(--text2); }
-    .vocab-arti { font-size: 14px; font-weight: 500; }
-
-    /* ──────────── PROFIL ──────────── */
-    .profil-header {
-      background: linear-gradient(160deg, #150015 0%, var(--bg) 70%);
-      padding: 50px 24px 32px; text-align: center;
-    }
-    .profil-avatar {
-      width: 80px; height: 80px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--red), var(--gold));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 36px; margin: 0 auto 16px;
-    }
-    .profil-name { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 900; }
-    .profil-level { color: var(--gold); font-size: 13px; font-weight: 500; margin-top: 4px; }
-
-    .profil-stats {
-      display: grid; grid-template-columns: 1fr 1fr 1fr;
-      gap: 12px; padding: 20px 24px;
-    }
-    .ps-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 16px 8px; text-align: center;
-    }
-    .ps-val { font-size: 22px; font-weight: 700; color: var(--gold); }
-    .ps-lbl { font-size: 10px; color: var(--text2); margin-top: 2px; }
-
-    .profil-section { padding: 0 24px 16px; }
-    .profil-item {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 14px 0; border-bottom: 1px solid var(--border);
-    }
-    .profil-item-left { display: flex; align-items: center; gap: 12px; }
-    .profil-item-icon { font-size: 20px; }
-    .profil-item-label { font-size: 15px; }
-    .profil-item-val { font-size: 14px; color: var(--text2); }
-
-    /* ──────────── UTILS ──────────── */
-    .toast {
-      position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-      background: var(--surface); border: 1px solid var(--border);
-      color: var(--text); padding: 12px 20px; border-radius: 99px;
-      font-size: 13px; z-index: 999; opacity: 0;
-      transition: opacity 0.3s; pointer-events: none; white-space: nowrap;
-    }
-    .toast.show { opacity: 1; }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .anim { animation: fadeUp 0.4s ease forwards; }
+    /* TOAST */
+    .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;padding:12px 22px;border-radius:99px;font-size:13px;font-weight:700;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;box-shadow:var(--shadow);}
+    .toast.show{opacity:1;}
   </style>
 </head>
 <body>
 
-<!-- ══════════ SCREEN: HOME ══════════ -->
+<!-- ═══ HOME ═══ -->
 <div class="screen active" id="screen-home">
-  <div class="home-hero">
-    <div class="hero-label">🇨🇳 Belajar Bahasa</div>
-    <div class="hero-title">Mandarin<br/>App</div>
-    <div class="hero-sub">Mulai perjalanan belajarmu hari ini</div>
+  <div class="hero hero-home">
+    <div class="hero-tag">🌟 Selamat Belajar!</div>
+    <div class="hero-title">Mandarin App</div>
+    <div class="hero-sub">Belajar bahasa Mandarin jadi seru!</div>
+    <div class="hero-deco">中</div>
   </div>
-
   <div class="stats-row">
-    <div class="stat-card">
-      <div class="stat-num" id="stat-hari">0</div>
-      <div class="stat-lbl">Hari Streak</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num" id="stat-kata">0</div>
-      <div class="stat-lbl">Kata Dipelajari</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num" id="stat-xp">0</div>
-      <div class="stat-lbl">Total XP</div>
-    </div>
+    <div class="stat-card"><div class="stat-num" id="stat-streak" style="color:var(--coral)">0</div><div class="stat-lbl">🔥 Streak</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-kata" style="color:var(--mint)">0</div><div class="stat-lbl">✅ Hafal</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-xp" style="color:var(--sky)">0</div><div class="stat-lbl">⭐ XP</div></div>
   </div>
-
-  <div class="section-title">MENU UTAMA</div>
+  <div class="section-title">Menu Utama</div>
   <div class="menu-grid">
-    <div class="menu-card red" onclick="goScreen('screen-flashcard')">
-      <div class="mc-icon">🃏</div>
-      <div class="mc-title">Flashcard</div>
-      <div class="mc-desc">Hafal kosakata baru</div>
+    <div class="menu-card mc-coral" onclick="goScreen('screen-fc')">
+      <div class="mc-icon">🃏</div><div class="mc-title">Flashcard</div><div class="mc-desc">Hafal kosakata baru</div>
+      <div class="menu-card-deco">🃏</div>
     </div>
-    <div class="menu-card gold" onclick="goScreen('screen-kuis')">
-      <div class="mc-icon">🎯</div>
-      <div class="mc-title">Kuis</div>
-      <div class="mc-desc">Uji pemahamanmu</div>
+    <div class="menu-card mc-gold" onclick="goScreen('screen-quiz')">
+      <div class="mc-icon">🎯</div><div class="mc-title">Kuis</div><div class="mc-desc">Uji kemampuanmu</div>
+      <div class="menu-card-deco">🎯</div>
     </div>
-    <div class="menu-card green" onclick="goScreen('screen-materi')">
-      <div class="mc-icon">📚</div>
-      <div class="mc-title">Materi</div>
-      <div class="mc-desc">Pelajari topik baru</div>
+    <div class="menu-card mc-mint" onclick="goScreen('screen-materi')">
+      <div class="mc-icon">📚</div><div class="mc-title">Materi</div><div class="mc-desc">Pelajari topik baru</div>
+      <div class="menu-card-deco">📚</div>
     </div>
-    <div class="menu-card blue" onclick="goScreen('screen-profil')">
-      <div class="mc-icon">👤</div>
-      <div class="mc-title">Profil</div>
-      <div class="mc-desc">Lihat progresmu</div>
+    <div class="menu-card mc-sky" onclick="goScreen('screen-profil')">
+      <div class="mc-icon">👤</div><div class="mc-title">Profil</div><div class="mc-desc">Lihat progresmu</div>
+      <div class="menu-card-deco">👤</div>
     </div>
   </div>
-
-  <div class="section-title">KATA HARI INI</div>
-  <div style="margin: 0 24px 24px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; display:flex; gap:16px; align-items:center;">
-    <div style="font-family:'Noto Serif SC',serif; font-size:52px; color:var(--gold); line-height:1;" id="wotd-hanzi">你好</div>
+  <div class="section-title">Kata Hari Ini</div>
+  <div class="card wotd-card">
     <div>
-      <div style="font-size:16px; color:var(--text2);" id="wotd-pinyin">Nǐ hǎo</div>
-      <div style="font-size:18px; font-weight:600; margin-top:4px;" id="wotd-arti">Halo / Hai</div>
-      <div style="font-size:12px; color:var(--text2); margin-top:4px;">Sapaan umum</div>
+      <div class="wotd-hanzi" id="wotd-hz">你好</div>
+      <button class="audio-btn" onclick="speak(document.getElementById('wotd-hz').textContent)">🔊 Dengarkan</button>
+    </div>
+    <div>
+      <div class="wotd-pin" id="wotd-py">Nǐ hǎo</div>
+      <div class="wotd-art" id="wotd-ar">Halo / Hai</div>
     </div>
   </div>
+  <div style="height:10px"></div>
 </div>
 
-<!-- ══════════ SCREEN: FLASHCARD ══════════ -->
-<div class="screen" id="screen-flashcard">
-  <div class="fc-header">
-    <div class="fc-title">Flashcard</div>
-    <div class="fc-sub">Sentuh kartu untuk lihat artinya</div>
+<!-- ═══ FLASHCARD ═══ -->
+<div class="screen" id="screen-fc">
+  <div class="hero hero-fc">
+    <div class="hero-tag">🃏 Latihan</div>
+    <div class="hero-title">Flashcard</div>
+    <div class="hero-sub">Sentuh kartu untuk lihat artinya</div>
+    <div class="hero-deco">卡</div>
   </div>
-
-  <div style="padding: 16px 24px 8px;">
-    <div class="fc-category-select" id="fc-cats"></div>
-  </div>
-
-  <div class="fc-progress-bar"><div class="fc-progress-fill" id="fc-bar"></div></div>
-  <div class="fc-counter" id="fc-counter">Kartu 1 dari 10</div>
-
-  <div class="fc-card-wrap">
+  <div class="fc-cats" id="fc-cats"></div>
+  <div class="prog-wrap"><div class="prog-fill" id="fc-prog"></div></div>
+  <div class="prog-label" id="fc-label">Kartu 1 dari 10</div>
+  <div class="fc-wrap">
     <div class="fc-card" id="fc-card" onclick="flipCard()">
-      <div class="fc-front">
-        <div class="fc-hanzi" id="fc-hanzi">你好</div>
-        <div class="fc-tap-hint">👆 Sentuh untuk lihat arti</div>
+      <div class="fc-face fc-front">
+        <div class="fc-hanzi" id="fc-hz">你好</div>
+        <button class="audio-btn" onclick="event.stopPropagation();speak(document.getElementById('fc-hz').textContent)">🔊 Dengarkan</button>
+        <div class="fc-hint">👆 Sentuh untuk lihat arti</div>
       </div>
-      <div class="fc-back">
-        <div class="fc-pinyin" id="fc-pinyin">Nǐ hǎo</div>
+      <div class="fc-face fc-back">
+        <div class="fc-pinyin" id="fc-py">Nǐ hǎo</div>
         <div class="fc-meaning" id="fc-meaning">Halo / Hai</div>
-        <div class="fc-example" id="fc-example">你好！我是学生。<br/>"Halo! Saya seorang pelajar."</div>
+        <div class="fc-example" id="fc-ex"></div>
       </div>
     </div>
   </div>
-
-  <div class="fc-buttons" id="fc-buttons-main">
-    <button class="fc-btn wrong" onclick="fcAnswer(false)">✗ Belum Hafal</button>
-    <button class="fc-btn correct" onclick="fcAnswer(true)">✓ Sudah Hafal</button>
+  <div class="fc-btns">
+    <button class="fc-btn fc-wrong" onclick="fcAnswer(false)">✗ Belum Hafal</button>
+    <button class="fc-btn fc-correct" onclick="fcAnswer(true)">✓ Sudah Hafal</button>
   </div>
 </div>
 
-<!-- ══════════ SCREEN: KUIS ══════════ -->
-<div class="screen" id="screen-kuis">
-  <div class="quiz-header">
-    <div class="quiz-title">Kuis</div>
-    <div style="color:var(--text2); font-size:13px; margin-top:4px;">Pilih jawaban yang benar</div>
+<!-- ═══ KUIS ═══ -->
+<div class="screen" id="screen-quiz">
+  <div class="hero hero-quiz">
+    <div class="hero-tag">🎯 Latihan</div>
+    <div class="hero-title">Kuis</div>
+    <div class="hero-sub">Pilih mode latihan di bawah</div>
+    <div class="hero-deco">题</div>
   </div>
-
+  <div class="quiz-tabs">
+    <button class="quiz-tab active" id="qtab-campuran" onclick="setMode('campuran')">🔀 Campuran</button>
+    <button class="quiz-tab" id="qtab-hanzi" onclick="setMode('hanzi')">汉字 Hanzi</button>
+    <button class="quiz-tab" id="qtab-arti" onclick="setMode('arti')">📝 Arti</button>
+  </div>
   <div id="quiz-play">
-    <div style="display:flex; justify-content:space-between; align-items:center; padding:16px 24px 8px;">
-      <div style="font-size:13px; color:var(--text2);" id="quiz-counter">Soal 1 / 10</div>
-      <div style="font-size:13px; color:var(--gold); font-weight:600;" id="quiz-score-live">Skor: 0</div>
+    <div class="quiz-status">
+      <div class="quiz-count" id="quiz-count">Soal 1 / 10</div>
+      <div class="quiz-score-badge" id="quiz-score">⭐ 0</div>
     </div>
-    <div class="fc-progress-bar" style="margin: 0 24px 0;">
-      <div class="fc-progress-fill" id="quiz-bar"></div>
+    <div class="prog-wrap" style="margin-top:0"><div class="prog-fill" id="quiz-prog"></div></div>
+    <div class="card quiz-q-box">
+      <div class="quiz-q-label" id="quiz-label">Apa arti karakter ini?</div>
+      <div id="quiz-content"></div>
+      <button class="audio-btn" id="quiz-audio" onclick="speak(currentHz)" style="display:none">🔊 Dengarkan</button>
     </div>
-
-    <div class="quiz-q-box">
-      <div class="quiz-q-label" id="quiz-q-label">Apa arti karakter ini?</div>
-      <div id="quiz-q-content" style="font-family:'Noto Serif SC',serif; font-size:72px;"></div>
-    </div>
-
-    <div class="quiz-options" id="quiz-opts"></div>
-
-    <div style="padding:16px 24px; display:none;" id="quiz-next-wrap">
-      <button class="btn-primary" style="width:100%;" onclick="quizNext()">Soal Berikutnya →</button>
+    <div class="quiz-opts" id="quiz-opts"></div>
+    <div class="quiz-next-wrap" id="quiz-next">
+      <button class="btn-primary" onclick="nextQuestion()">Soal Berikutnya →</button>
     </div>
   </div>
-
-  <div id="quiz-result" class="quiz-result" style="display:none;">
-    <div class="quiz-result-icon" id="qr-icon">🎉</div>
-    <div class="quiz-result-score" id="qr-score">8/10</div>
-    <div class="quiz-result-label" id="qr-label">Luar biasa! Kamu hebat!</div>
-    <div style="display:flex; flex-direction:column; gap:12px; margin-top:24px;">
-      <button class="btn-primary" onclick="startQuiz()">Ulangi Kuis</button>
-      <button class="btn-primary" style="background:var(--surface); color:var(--text); border:1px solid var(--border);" onclick="goScreen('screen-home')">Kembali ke Beranda</button>
+  <div id="quiz-result" style="display:none">
+    <div class="result-box">
+      <div class="result-icon" id="res-icon">🎉</div>
+      <div class="result-score" id="res-score">8/10</div>
+      <div class="result-label" id="res-label">Bagus sekali!</div>
+      <button class="btn-primary" onclick="startQuiz()">🔄 Ulangi Kuis</button>
+      <button class="btn-secondary" onclick="goScreen('screen-home')">🏠 Kembali</button>
     </div>
   </div>
 </div>
 
-<!-- ══════════ SCREEN: MATERI ══════════ -->
+<!-- ═══ MATERI ═══ -->
 <div class="screen" id="screen-materi">
-  <!-- List pelajaran -->
-  <div id="materi-list">
-    <div class="materi-header">
-      <div class="materi-title">Materi Pelajaran</div>
-      <div style="color:var(--text2); font-size:13px; margin-top:4px;">Belajar dari dasar hingga mahir</div>
+  <div id="mat-list">
+    <div class="hero hero-mat">
+      <div class="hero-tag">📚 Belajar</div>
+      <div class="hero-title">Materi</div>
+      <div class="hero-sub">Pilih topik yang ingin dipelajari</div>
+      <div class="hero-deco">学</div>
     </div>
-    <div style="height:16px;"></div>
+    <div style="height:16px"></div>
     <div class="lesson-list" id="lesson-list"></div>
   </div>
-
-  <!-- Detail pelajaran -->
-  <div id="materi-detail" style="display:none;">
-    <div class="ld-header">
+  <div id="mat-detail" style="display:none">
+    <div class="hero hero-mat ld-header">
       <button class="back-btn" onclick="backToList()">←</button>
-      <div>
-        <div style="font-size:12px; color:var(--gold); letter-spacing:2px; text-transform:uppercase;">PELAJARAN</div>
-        <div class="ld-title" id="ld-title">Sapaan Dasar</div>
-      </div>
+      <div><div class="ld-label">PELAJARAN</div><div class="ld-title" id="ld-title">—</div></div>
     </div>
-    <div class="vocab-table" id="vocab-table"></div>
-    <div style="padding:0 24px 24px;">
-      <button class="btn-primary" style="width:100%;" onclick="goScreen('screen-flashcard')">Latihan Flashcard →</button>
+    <div class="vocab-list" id="vocab-list"></div>
+    <div style="padding:0 20px 24px">
+      <button class="btn-primary" onclick="goScreen('screen-fc')">Latihan Flashcard →</button>
     </div>
   </div>
 </div>
 
-<!-- ══════════ SCREEN: PROFIL ══════════ -->
+<!-- ═══ PROFIL ═══ -->
 <div class="screen" id="screen-profil">
-  <div class="profil-header">
+  <div class="hero hero-prof" style="text-align:center">
     <div class="profil-avatar">🐉</div>
-    <div class="profil-name" id="profil-name">Pelajar Mandarin</div>
-    <div class="profil-level" id="profil-level">⭐ Level Pemula</div>
+    <div class="profil-name" id="p-name">Pelajar Mandarin</div>
+    <div class="profil-level" id="p-level">⭐ Level Pemula</div>
   </div>
-
-  <div class="profil-stats">
-    <div class="ps-card"><div class="ps-val" id="ps-xp">0</div><div class="ps-lbl">Total XP</div></div>
-    <div class="ps-card"><div class="ps-val" id="ps-kata">0</div><div class="ps-lbl">Kata Hafal</div></div>
-    <div class="ps-card"><div class="ps-val" id="ps-kuis">0</div><div class="ps-lbl">Kuis Selesai</div></div>
+  <div class="ps-grid">
+    <div class="ps-card"><div class="ps-val" id="ps-xp">0</div><div class="ps-lbl">XP</div></div>
+    <div class="ps-card"><div class="ps-val" id="ps-kata" style="color:var(--mint)">0</div><div class="ps-lbl">Hafal</div></div>
+    <div class="ps-card"><div class="ps-val" id="ps-kuis" style="color:var(--sky)">0</div><div class="ps-lbl">Kuis</div></div>
   </div>
-
-  <div style="padding: 0 24px 16px;">
-    <div class="section-title" style="padding:0; margin-bottom:12px;">PENCAPAIAN</div>
+  <div class="profil-section" style="margin-top:16px">
+    <div class="section-title" style="padding:0;margin-bottom:8px">Pencapaian</div>
     <div class="profil-item">
-      <div class="profil-item-left">
-        <div class="profil-item-icon">🔥</div>
-        <div class="profil-item-label">Streak Hari Ini</div>
-      </div>
-      <div class="profil-item-val" id="pi-streak">0 hari</div>
+      <div class="profil-item-left"><div class="profil-item-ico">🔥</div><div class="profil-item-lbl">Streak</div></div>
+      <div class="profil-item-val" id="p-streak">0 hari</div>
     </div>
     <div class="profil-item">
-      <div class="profil-item-left">
-        <div class="profil-item-icon">🏆</div>
-        <div class="profil-item-label">Skor Kuis Tertinggi</div>
-      </div>
-      <div class="profil-item-val" id="pi-best">-</div>
+      <div class="profil-item-left"><div class="profil-item-ico">🏆</div><div class="profil-item-lbl">Skor Terbaik</div></div>
+      <div class="profil-item-val" id="p-best">-</div>
     </div>
     <div class="profil-item">
-      <div class="profil-item-left">
-        <div class="profil-item-icon">📅</div>
-        <div class="profil-item-label">Bergabung Sejak</div>
-      </div>
-      <div class="profil-item-val" id="pi-join">-</div>
+      <div class="profil-item-left"><div class="profil-item-ico">📅</div><div class="profil-item-lbl">Bergabung</div></div>
+      <div class="profil-item-val" id="p-join">-</div>
     </div>
   </div>
-
-  <div style="padding: 0 24px 24px;">
-    <div class="section-title" style="padding:0; margin-bottom:12px;">PENGATURAN</div>
-    <div class="profil-item" onclick="editName()" style="cursor:pointer;">
-      <div class="profil-item-left">
-        <div class="profil-item-icon">✏️</div>
-        <div class="profil-item-label">Ubah Nama</div>
-      </div>
+  <div class="profil-section">
+    <div class="section-title" style="padding:0;margin-bottom:8px">Pengaturan</div>
+    <div class="profil-item" onclick="editName()">
+      <div class="profil-item-left"><div class="profil-item-ico">✏️</div><div class="profil-item-lbl">Ubah Nama</div></div>
       <div class="profil-item-val">→</div>
     </div>
-    <div class="profil-item" onclick="resetData()" style="cursor:pointer;">
-      <div class="profil-item-left">
-        <div class="profil-item-icon">🔄</div>
-        <div class="profil-item-label">Reset Progres</div>
-      </div>
+    <div class="profil-item" onclick="resetData()">
+      <div class="profil-item-left"><div class="profil-item-ico">🔄</div><div class="profil-item-lbl">Reset Progres</div></div>
       <div class="profil-item-val">→</div>
     </div>
   </div>
 </div>
 
-<!-- ══════════ BOTTOM NAV ══════════ -->
+<!-- ═══ NAV ═══ -->
 <nav class="nav">
   <button class="nav-btn active" id="nav-home" onclick="goScreen('screen-home')">
-    <span class="icon">🏠</span>Beranda
+    <div class="nav-icon">🏠</div>Beranda
   </button>
-  <button class="nav-btn" id="nav-flashcard" onclick="goScreen('screen-flashcard')">
-    <span class="icon">🃏</span>Flashcard
+  <button class="nav-btn" id="nav-fc" onclick="goScreen('screen-fc')">
+    <div class="nav-icon">🃏</div>Flashcard
   </button>
-  <button class="nav-btn" id="nav-kuis" onclick="goScreen('screen-kuis')">
-    <span class="icon">🎯</span>Kuis
+  <button class="nav-btn" id="nav-quiz" onclick="goScreen('screen-quiz')">
+    <div class="nav-icon">🎯</div>Kuis
   </button>
   <button class="nav-btn" id="nav-materi" onclick="goScreen('screen-materi')">
-    <span class="icon">📚</span>Materi
+    <div class="nav-icon">📚</div>Materi
   </button>
   <button class="nav-btn" id="nav-profil" onclick="goScreen('screen-profil')">
-    <span class="icon">👤</span>Profil
+    <div class="nav-icon">👤</div>Profil
   </button>
 </nav>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ════════════════════════════════════════
-//  DATA KOSAKATA
-// ════════════════════════════════════════
-const VOCAB = {
+// ═══════════════════════════════════════════════
+// SEMUA VARIABEL GLOBAL DIDEKLARASIKAN DI SINI
+// ═══════════════════════════════════════════════
+var appState = {
+  xp: 0, kata: 0, kuis: 0, streak: 0,
+  bestScore: null, joinDate: null,
+  name: 'Pelajar Mandarin', lastVisit: null
+};
+
+var fcIndex    = 0;
+var fcDeck     = [];
+var fcCategory = 'sapaan';
+var fcFlipped  = false;
+
+var quizDeck      = [];
+var quizIdx       = 0;
+var quizScore     = 0;
+var quizAnswered  = false;
+var quizMode      = 'campuran';
+var currentHz     = '';
+
+// ═══════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════
+var VOCAB = {
   sapaan: [
-    { hanzi:'你好', pinyin:'Nǐ hǎo', arti:'Halo / Hai', contoh:'你好！我是学生。\n"Halo! Saya seorang pelajar."' },
-    { hanzi:'再见', pinyin:'Zài jiàn', arti:'Sampai jumpa', contoh:'再见！明天见。\n"Sampai jumpa! Sampai besok."' },
-    { hanzi:'谢谢', pinyin:'Xiè xiè', arti:'Terima kasih', contoh:'谢谢你的帮助。\n"Terima kasih atas bantuanmu."' },
-    { hanzi:'对不起', pinyin:'Duì bu qǐ', arti:'Maaf', contoh:'对不起，我迟到了。\n"Maaf, saya terlambat."' },
-    { hanzi:'没关系', pinyin:'Méi guān xi', arti:'Tidak apa-apa', contoh:'没关系，我等你。\n"Tidak apa-apa, saya menunggumu."' },
-    { hanzi:'请', pinyin:'Qǐng', arti:'Tolong / Silakan', contoh:'请进。\n"Silakan masuk."' },
-    { hanzi:'好的', pinyin:'Hǎo de', arti:'Baik / Oke', contoh:'好的，我明白了。\n"Baik, saya mengerti."' },
-    { hanzi:'早上好', pinyin:'Zǎo shàng hǎo', arti:'Selamat pagi', contoh:'早上好！\n"Selamat pagi!"' },
+    { hanzi:'你好',   pinyin:'Nǐ hǎo',       arti:'Halo / Hai',        contoh:'你好！我是学生。\n"Halo! Saya seorang pelajar."' },
+    { hanzi:'再见',   pinyin:'Zài jiàn',      arti:'Sampai jumpa',      contoh:'再见！明天见。\n"Sampai jumpa! Sampai besok."' },
+    { hanzi:'谢谢',   pinyin:'Xiè xiè',       arti:'Terima kasih',      contoh:'谢谢你的帮助。\n"Terima kasih atas bantuanmu."' },
+    { hanzi:'对不起', pinyin:'Duì bu qǐ',     arti:'Maaf',              contoh:'对不起，我迟到了。\n"Maaf, saya terlambat."' },
+    { hanzi:'没关系', pinyin:'Méi guān xi',   arti:'Tidak apa-apa',     contoh:'没关系，我等你。\n"Tidak apa-apa, saya menunggumu."' },
+    { hanzi:'请',     pinyin:'Qǐng',          arti:'Tolong / Silakan',  contoh:'请进。\n"Silakan masuk."' },
+    { hanzi:'好的',   pinyin:'Hǎo de',        arti:'Baik / Oke',        contoh:'好的，我明白了。\n"Baik, saya mengerti."' },
+    { hanzi:'早上好', pinyin:'Zǎo shàng hǎo', arti:'Selamat pagi',      contoh:'早上好！\n"Selamat pagi!"' },
   ],
   angka: [
-    { hanzi:'一', pinyin:'Yī', arti:'Satu (1)', contoh:'我有一个苹果。\n"Saya punya satu apel."' },
-    { hanzi:'二', pinyin:'Èr', arti:'Dua (2)', contoh:'两个人。\n"Dua orang."' },
-    { hanzi:'三', pinyin:'Sān', arti:'Tiga (3)', contoh:'三点钟。\n"Pukul tiga."' },
-    { hanzi:'四', pinyin:'Sì', arti:'Empat (4)', contoh:'四月。\n"Bulan April."' },
-    { hanzi:'五', pinyin:'Wǔ', arti:'Lima (5)', contoh:'五个苹果。\n"Lima apel."' },
-    { hanzi:'六', pinyin:'Liù', arti:'Enam (6)', contoh:'六月。\n"Bulan Juni."' },
-    { hanzi:'七', pinyin:'Qī', arti:'Tujuh (7)', contoh:'七天。\n"Tujuh hari."' },
-    { hanzi:'八', pinyin:'Bā', arti:'Delapan (8)', contoh:'八月。\n"Bulan Agustus."' },
+    { hanzi:'一', pinyin:'Yī',  arti:'Satu (1)',     contoh:'我有一个苹果。\n"Saya punya satu apel."' },
+    { hanzi:'二', pinyin:'Èr',  arti:'Dua (2)',      contoh:'两个人。\n"Dua orang."' },
+    { hanzi:'三', pinyin:'Sān', arti:'Tiga (3)',     contoh:'三点钟。\n"Pukul tiga."' },
+    { hanzi:'四', pinyin:'Sì',  arti:'Empat (4)',    contoh:'四月。\n"Bulan April."' },
+    { hanzi:'五', pinyin:'Wǔ',  arti:'Lima (5)',     contoh:'五个苹果。\n"Lima apel."' },
+    { hanzi:'六', pinyin:'Liù', arti:'Enam (6)',     contoh:'六月。\n"Bulan Juni."' },
+    { hanzi:'七', pinyin:'Qī',  arti:'Tujuh (7)',    contoh:'七天。\n"Tujuh hari."' },
+    { hanzi:'八', pinyin:'Bā',  arti:'Delapan (8)',  contoh:'八月。\n"Bulan Agustus."' },
     { hanzi:'九', pinyin:'Jiǔ', arti:'Sembilan (9)', contoh:'九月。\n"Bulan September."' },
     { hanzi:'十', pinyin:'Shí', arti:'Sepuluh (10)', contoh:'十个人。\n"Sepuluh orang."' },
   ],
   keluarga: [
-    { hanzi:'妈妈', pinyin:'Māmā', arti:'Ibu', contoh:'我妈妈很漂亮。\n"Ibuku sangat cantik."' },
-    { hanzi:'爸爸', pinyin:'Bàba', arti:'Ayah', contoh:'爸爸在哪里？\n"Di mana ayah?"' },
-    { hanzi:'哥哥', pinyin:'Gēgē', arti:'Kakak laki-laki', contoh:'我哥哥是老师。\n"Kakak laki-lakiku adalah guru."' },
-    { hanzi:'姐姐', pinyin:'Jiějiě', arti:'Kakak perempuan', contoh:'姐姐很聪明。\n"Kakak perempuan sangat pintar."' },
-    { hanzi:'弟弟', pinyin:'Dìdi', arti:'Adik laki-laki', contoh:'弟弟喜欢玩。\n"Adik laki-laki suka bermain."' },
-    { hanzi:'妹妹', pinyin:'Mèimei', arti:'Adik perempuan', contoh:'妹妹很可爱。\n"Adik perempuan sangat lucu."' },
-    { hanzi:'爷爷', pinyin:'Yéyé', arti:'Kakek (pihak ayah)', contoh:'爷爷七十岁了。\n"Kakek sudah 70 tahun."' },
-    { hanzi:'奶奶', pinyin:'Nǎinai', arti:'Nenek (pihak ayah)', contoh:'奶奶做的菜很好吃。\n"Masakan nenek sangat enak."' },
+    { hanzi:'妈妈', pinyin:'Māmā',   arti:'Ibu',              contoh:'我妈妈很漂亮。\n"Ibuku sangat cantik."' },
+    { hanzi:'爸爸', pinyin:'Bàba',   arti:'Ayah',             contoh:'爸爸在哪里？\n"Di mana ayah?"' },
+    { hanzi:'哥哥', pinyin:'Gēgē',   arti:'Kakak laki-laki',  contoh:'我哥哥是老师。\n"Kakak laki-lakiku adalah guru."' },
+    { hanzi:'姐姐', pinyin:'Jiějiě', arti:'Kakak perempuan',  contoh:'姐姐很聪明。\n"Kakak perempuan sangat pintar."' },
+    { hanzi:'弟弟', pinyin:'Dìdi',   arti:'Adik laki-laki',   contoh:'弟弟喜欢玩。\n"Adik laki-laki suka bermain."' },
+    { hanzi:'妹妹', pinyin:'Mèimei', arti:'Adik perempuan',   contoh:'妹妹很可爱。\n"Adik perempuan sangat lucu."' },
+    { hanzi:'爷爷', pinyin:'Yéyé',   arti:'Kakek',            contoh:'爷爷七十岁了。\n"Kakek sudah 70 tahun."' },
+    { hanzi:'奶奶', pinyin:'Nǎinai', arti:'Nenek',            contoh:'奶奶做的菜很好吃。\n"Masakan nenek sangat enak."' },
   ],
   makanan: [
-    { hanzi:'米饭', pinyin:'Mǐfàn', arti:'Nasi', contoh:'我喜欢吃米饭。\n"Saya suka makan nasi."' },
-    { hanzi:'水', pinyin:'Shuǐ', arti:'Air', contoh:'我要喝水。\n"Saya ingin minum air."' },
-    { hanzi:'茶', pinyin:'Chá', arti:'Teh', contoh:'喝茶吗？\n"Mau minum teh?"' },
-    { hanzi:'面条', pinyin:'Miàntiáo', arti:'Mie', contoh:'我想吃面条。\n"Saya ingin makan mie."' },
-    { hanzi:'苹果', pinyin:'Píngguǒ', arti:'Apel', contoh:'苹果很甜。\n"Apel sangat manis."' },
-    { hanzi:'鸡肉', pinyin:'Jīròu', arti:'Daging ayam', contoh:'我要鸡肉。\n"Saya mau daging ayam."' },
+    { hanzi:'米饭', pinyin:'Mǐfàn',    arti:'Nasi',        contoh:'我喜欢吃米饭。\n"Saya suka makan nasi."' },
+    { hanzi:'水',   pinyin:'Shuǐ',     arti:'Air',         contoh:'我要喝水。\n"Saya ingin minum air."' },
+    { hanzi:'茶',   pinyin:'Chá',      arti:'Teh',         contoh:'喝茶吗？\n"Mau minum teh?"' },
+    { hanzi:'面条', pinyin:'Miàntiáo', arti:'Mie',         contoh:'我想吃面条。\n"Saya ingin makan mie."' },
+    { hanzi:'苹果', pinyin:'Píngguǒ',  arti:'Apel',        contoh:'苹果很甜。\n"Apel sangat manis."' },
+    { hanzi:'鸡肉', pinyin:'Jīròu',    arti:'Daging ayam', contoh:'我要鸡肉。\n"Saya mau daging ayam."' },
   ],
 };
 
-const LESSONS = [
-  { id:'sapaan', icon:'👋', name:'Sapaan Dasar', desc:'你好, 谢谢, 再见...', key:'sapaan', done:false },
-  { id:'angka', icon:'🔢', name:'Angka 1-10', desc:'一, 二, 三...', key:'angka', done:false },
-  { id:'keluarga', icon:'👨‍👩‍👧', name:'Anggota Keluarga', desc:'妈妈, 爸爸, 哥哥...', key:'keluarga', done:false },
-  { id:'makanan', icon:'🍜', name:'Makanan & Minuman', desc:'米饭, 水, 茶...', key:'makanan', done:false },
+var LESSONS = [
+  { id:'sapaan',   icon:'👋', name:'Sapaan Dasar',     desc:'你好, 谢谢, 再见...', key:'sapaan',   done:false, color:'#FF6B6B' },
+  { id:'angka',    icon:'🔢', name:'Angka 1–10',        desc:'一, 二, 三...',       key:'angka',    done:false, color:'#FECA57' },
+  { id:'keluarga', icon:'👨‍👩‍👧', name:'Anggota Keluarga', desc:'妈妈, 爸爸, 哥哥...', key:'keluarga', done:false, color:'#1DD1A1' },
+  { id:'makanan',  icon:'🍜', name:'Makanan & Minuman', desc:'米饭, 水, 茶...',      key:'makanan',  done:false, color:'#54A0FF' },
 ];
 
-// ════════════════════════════════════════
-//  STATE & STORAGE
-// ════════════════════════════════════════
-let state = {
-  xp: 0, kata: 0, kuis: 0, streak: 0,
-  bestScore: null, joinDate: null, name: 'Pelajar Mandarin',
-  lastVisit: null,
-};
+var WOTD = [
+  { hanzi:'你好', pinyin:'Nǐ hǎo',    arti:'Halo / Hai' },
+  { hanzi:'谢谢', pinyin:'Xiè xiè',   arti:'Terima kasih' },
+  { hanzi:'再见', pinyin:'Zài jiàn',  arti:'Sampai jumpa' },
+  { hanzi:'学习', pinyin:'Xuéxí',     arti:'Belajar' },
+  { hanzi:'朋友', pinyin:'Péngyǒu',   arti:'Teman' },
+  { hanzi:'快乐', pinyin:'Kuàilè',    arti:'Bahagia' },
+  { hanzi:'美丽', pinyin:'Měilì',     arti:'Cantik / Indah' },
+];
 
+// ═══════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 2200);
+}
+
+function speak(text) {
+  if (!text) return;
+  if (!window.speechSynthesis) { showToast('Audio tidak didukung di perangkat ini'); return; }
+  try {
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = 'zh-CN';
+    u.rate = 0.85;
+    u.pitch = 1.0;
+    var voices = window.speechSynthesis.getVoices();
+    for (var i = 0; i < voices.length; i++) {
+      if (voices[i].lang && voices[i].lang.indexOf('zh') === 0) {
+        u.voice = voices[i];
+        break;
+      }
+    }
+    window.speechSynthesis.speak(u);
+    showToast('🔊 Memutar audio...');
+  } catch(e) {
+    showToast('Gagal memutar audio');
+  }
+}
+
+// ═══════════════════════════════════════════════
+// STATE / STORAGE
+// ═══════════════════════════════════════════════
 function loadState() {
   try {
-    const s = localStorage.getItem('mandarin_state');
-    if (s) state = { ...state, ...JSON.parse(s) };
-    if (!state.joinDate) state.joinDate = new Date().toLocaleDateString('id-ID');
+    var saved = localStorage.getItem('mandarin_v2');
+    if (saved) {
+      var parsed = JSON.parse(saved);
+      for (var k in parsed) { appState[k] = parsed[k]; }
+    }
+    if (!appState.joinDate) appState.joinDate = new Date().toLocaleDateString('id-ID');
     checkStreak();
   } catch(e) {}
 }
 
 function saveState() {
-  localStorage.setItem('mandarin_state', JSON.stringify(state));
+  try { localStorage.setItem('mandarin_v2', JSON.stringify(appState)); } catch(e) {}
 }
 
 function checkStreak() {
-  const today = new Date().toDateString();
-  if (state.lastVisit === today) return;
-  if (state.lastVisit === new Date(Date.now() - 86400000).toDateString()) {
-    state.streak++;
-  } else if (state.lastVisit !== today) {
-    state.streak = 1;
-  }
-  state.lastVisit = today;
+  var today = new Date().toDateString();
+  if (appState.lastVisit === today) return;
+  var yesterday = new Date(Date.now() - 86400000).toDateString();
+  appState.streak = (appState.lastVisit === yesterday) ? appState.streak + 1 : 1;
+  appState.lastVisit = today;
   saveState();
 }
 
-// ════════════════════════════════════════
-//  NAVIGATION
-// ════════════════════════════════════════
+// ═══════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════
+var NAV_MAP = {
+  'screen-home':   'nav-home',
+  'screen-fc':     'nav-fc',
+  'screen-quiz':   'nav-quiz',
+  'screen-materi': 'nav-materi',
+  'screen-profil': 'nav-profil',
+};
+
 function goScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  var screens = document.querySelectorAll('.screen');
+  for (var i = 0; i < screens.length; i++) screens[i].classList.remove('active');
   document.getElementById(id).classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  const map = {
-    'screen-home':'nav-home','screen-flashcard':'nav-flashcard',
-    'screen-kuis':'nav-kuis','screen-materi':'nav-materi','screen-profil':'nav-profil'
-  };
-  if (map[id]) document.getElementById(map[id]).classList.add('active');
-  updateHome();
-  if (id === 'screen-flashcard') initFlashcard();
-  if (id === 'screen-kuis') startQuiz();
+
+  var navBtns = document.querySelectorAll('.nav-btn');
+  for (var j = 0; j < navBtns.length; j++) navBtns[j].classList.remove('active');
+  if (NAV_MAP[id]) document.getElementById(NAV_MAP[id]).classList.add('active');
+
+  window.scrollTo(0, 0);
+
+  if (id === 'screen-home')   updateHome();
+  if (id === 'screen-fc')     initFC();
+  if (id === 'screen-quiz')   initQuizScreen();
   if (id === 'screen-materi') renderLessons();
   if (id === 'screen-profil') renderProfil();
-  window.scrollTo(0,0);
 }
 
-// ════════════════════════════════════════
-//  HOME
-// ════════════════════════════════════════
-const WOTD_LIST = [
-  { hanzi:'你好', pinyin:'Nǐ hǎo', arti:'Halo / Hai' },
-  { hanzi:'谢谢', pinyin:'Xiè xiè', arti:'Terima kasih' },
-  { hanzi:'再见', pinyin:'Zài jiàn', arti:'Sampai jumpa' },
-  { hanzi:'学习', pinyin:'Xuéxí', arti:'Belajar' },
-  { hanzi:'朋友', pinyin:'Péngyǒu', arti:'Teman' },
-  { hanzi:'快乐', pinyin:'Kuàilè', arti:'Bahagia' },
-  { hanzi:'美丽', pinyin:'Měilì', arti:'Cantik / Indah' },
-];
-
+// ═══════════════════════════════════════════════
+// HOME
+// ═══════════════════════════════════════════════
 function updateHome() {
-  document.getElementById('stat-hari').textContent = state.streak;
-  document.getElementById('stat-kata').textContent = state.kata;
-  document.getElementById('stat-xp').textContent = state.xp;
-  const w = WOTD_LIST[new Date().getDate() % WOTD_LIST.length];
-  document.getElementById('wotd-hanzi').textContent = w.hanzi;
-  document.getElementById('wotd-pinyin').textContent = w.pinyin;
-  document.getElementById('wotd-arti').textContent = w.arti;
+  document.getElementById('stat-streak').textContent = appState.streak;
+  document.getElementById('stat-kata').textContent   = appState.kata;
+  document.getElementById('stat-xp').textContent     = appState.xp;
+  var w = WOTD[new Date().getDate() % WOTD.length];
+  document.getElementById('wotd-hz').textContent = w.hanzi;
+  document.getElementById('wotd-py').textContent = w.pinyin;
+  document.getElementById('wotd-ar').textContent = w.arti;
 }
 
-// ════════════════════════════════════════
-//  FLASHCARD
-// ════════════════════════════════════════
-let fcIndex = 0, fcDeck = [], fcCategory = 'sapaan', fcFlipped = false;
-
-function initFlashcard() {
-  // build category pills
-  const cats = { sapaan:'Sapaan', angka:'Angka', keluarga:'Keluarga', makanan:'Makanan' };
-  const wrap = document.getElementById('fc-cats');
+// ═══════════════════════════════════════════════
+// FLASHCARD
+// ═══════════════════════════════════════════════
+function initFC() {
+  var cats = { sapaan:'👋 Sapaan', angka:'🔢 Angka', keluarga:'👨‍👩‍👧 Keluarga', makanan:'🍜 Makanan' };
+  var wrap = document.getElementById('fc-cats');
   wrap.innerHTML = '';
-  Object.entries(cats).forEach(([k,v]) => {
-    const p = document.createElement('div');
-    p.className = 'cat-pill' + (k === fcCategory ? ' active' : '');
-    p.textContent = v;
-    p.onclick = () => { fcCategory = k; fcIndex = 0; initFlashcard(); };
-    wrap.appendChild(p);
-  });
-  fcDeck = [...VOCAB[fcCategory]].sort(() => Math.random() - 0.5);
-  fcIndex = 0; fcFlipped = false;
+  var keys = Object.keys(cats);
+  for (var i = 0; i < keys.length; i++) {
+    (function(k) {
+      var p = document.createElement('button');
+      p.className = 'cat-pill' + (k === fcCategory ? ' active' : '');
+      p.textContent = cats[k];
+      p.onclick = function() { fcCategory = k; fcIndex = 0; fcFlipped = false; initFC(); };
+      wrap.appendChild(p);
+    })(keys[i]);
+  }
+  fcDeck = VOCAB[fcCategory].slice().sort(function() { return Math.random() - 0.5; });
+  fcIndex = 0;
+  fcFlipped = false;
   renderFC();
 }
 
 function renderFC() {
-  const card = fcDeck[fcIndex];
+  var card = fcDeck[fcIndex];
   document.getElementById('fc-card').classList.remove('flipped');
   fcFlipped = false;
-  document.getElementById('fc-hanzi').textContent = card.hanzi;
-  document.getElementById('fc-pinyin').textContent = card.pinyin;
+  document.getElementById('fc-hz').textContent      = card.hanzi;
+  document.getElementById('fc-py').textContent      = card.pinyin;
   document.getElementById('fc-meaning').textContent = card.arti;
-  document.getElementById('fc-example').innerHTML = card.contoh.replace('\n','<br/>');
-  const pct = ((fcIndex) / fcDeck.length * 100).toFixed(0);
-  document.getElementById('fc-bar').style.width = pct + '%';
-  document.getElementById('fc-counter').textContent = `Kartu ${fcIndex+1} dari ${fcDeck.length}`;
+  document.getElementById('fc-ex').innerHTML        = card.contoh.replace('\n', '<br>');
+  var pct = Math.round(fcIndex / fcDeck.length * 100);
+  document.getElementById('fc-prog').style.width  = pct + '%';
+  document.getElementById('fc-label').textContent = 'Kartu ' + (fcIndex + 1) + ' dari ' + fcDeck.length;
 }
 
 function flipCard() {
   fcFlipped = !fcFlipped;
   document.getElementById('fc-card').classList.toggle('flipped', fcFlipped);
+  if (fcFlipped) speak(fcDeck[fcIndex].hanzi);
 }
 
 function fcAnswer(correct) {
   if (!fcFlipped) { showToast('Sentuh kartu dulu!'); return; }
   if (correct) {
-    state.xp += 10; state.kata++; saveState();
-    showToast('✓ +10 XP');
+    appState.xp += 10;
+    appState.kata++;
+    saveState();
+    showToast('✓ +10 XP 🎉');
   } else {
-    showToast('Pelajari lagi ya!');
+    showToast('Pelajari lagi ya! 💪');
   }
   fcIndex++;
   if (fcIndex >= fcDeck.length) {
     showToast('🎉 Semua kartu selesai!');
     fcIndex = 0;
-    fcDeck = [...VOCAB[fcCategory]].sort(() => Math.random() - 0.5);
+    fcDeck = VOCAB[fcCategory].slice().sort(function() { return Math.random() - 0.5; });
   }
   setTimeout(renderFC, 300);
 }
 
-// ════════════════════════════════════════
-//  KUIS
-// ════════════════════════════════════════
-let quizDeck = [], quizIdx = 0, quizScore = 0, quizAnswered = false;
+// ═══════════════════════════════════════════════
+// KUIS
+// ═══════════════════════════════════════════════
+function initQuizScreen() {
+  // Reset tab visual
+  var tabs = ['campuran','hanzi','arti'];
+  for (var i = 0; i < tabs.length; i++) {
+    var el = document.getElementById('qtab-' + tabs[i]);
+    if (el) el.classList.remove('active');
+  }
+  var active = document.getElementById('qtab-' + quizMode);
+  if (active) active.classList.add('active');
+  startQuiz();
+}
+
+function setMode(mode) {
+  quizMode = mode;
+  var tabs = ['campuran','hanzi','arti'];
+  for (var i = 0; i < tabs.length; i++) {
+    document.getElementById('qtab-' + tabs[i]).classList.remove('active');
+  }
+  document.getElementById('qtab-' + mode).classList.add('active');
+  startQuiz();
+}
 
 function startQuiz() {
-  const all = Object.values(VOCAB).flat();
-  quizDeck = all.sort(() => Math.random() - 0.5).slice(0, 10);
-  quizIdx = 0; quizScore = 0;
-  document.getElementById('quiz-play').style.display = 'block';
+  var all = [];
+  var keys = Object.keys(VOCAB);
+  for (var i = 0; i < keys.length; i++) {
+    all = all.concat(VOCAB[keys[i]]);
+  }
+  quizDeck = all.slice().sort(function() { return Math.random() - 0.5; }).slice(0, 10);
+  quizIdx = 0;
+  quizScore = 0;
+  document.getElementById('quiz-play').style.display   = 'block';
   document.getElementById('quiz-result').style.display = 'none';
   renderQuiz();
 }
 
 function renderQuiz() {
   quizAnswered = false;
-  const q = quizDeck[quizIdx];
-  const pct = (quizIdx / quizDeck.length * 100).toFixed(0);
-  document.getElementById('quiz-bar').style.width = pct + '%';
-  document.getElementById('quiz-counter').textContent = `Soal ${quizIdx+1} / ${quizDeck.length}`;
-  document.getElementById('quiz-score-live').textContent = `Skor: ${quizScore}`;
+  var q = quizDeck[quizIdx];
+  currentHz = q.hanzi;
 
-  // Randomly: show hanzi → pick arti, or show arti → pick hanzi
-  const mode = Math.random() > 0.5 ? 'hanzi' : 'arti';
-  const qContent = document.getElementById('quiz-q-content');
-  const qLabel = document.getElementById('quiz-q-label');
+  var pct = Math.round(quizIdx / quizDeck.length * 100);
+  document.getElementById('quiz-prog').style.width  = pct + '%';
+  document.getElementById('quiz-count').textContent = 'Soal ' + (quizIdx + 1) + ' / ' + quizDeck.length;
+  document.getElementById('quiz-score').textContent = '⭐ ' + quizScore;
 
-  if (mode === 'hanzi') {
-    qLabel.textContent = 'Apa arti karakter ini?';
-    qContent.style.fontFamily = "'Noto Serif SC', serif";
-    qContent.style.fontSize = '72px';
-    qContent.textContent = q.hanzi;
+  // Tentukan mode soal
+  var mode;
+  if (quizMode === 'campuran') mode = Math.random() > 0.5 ? 'tebak-arti' : 'tebak-hanzi';
+  else if (quizMode === 'hanzi') mode = 'tebak-hanzi';
+  else mode = 'tebak-arti';
+
+  var content  = document.getElementById('quiz-content');
+  var label    = document.getElementById('quiz-label');
+  var audioBtn = document.getElementById('quiz-audio');
+
+  if (mode === 'tebak-arti') {
+    label.textContent   = 'Apa arti karakter ini?';
+    content.innerHTML   = '<div class="quiz-q-hanzi">' + q.hanzi + '</div><div class="quiz-q-pin">' + q.pinyin + '</div>';
+    audioBtn.style.display = 'inline-flex';
   } else {
-    qLabel.textContent = 'Pilih karakter yang benar:';
-    qContent.style.fontFamily = "'DM Sans', sans-serif";
-    qContent.style.fontSize = '24px';
-    qContent.textContent = q.arti;
+    label.textContent   = 'Pilih karakter Hanzi yang benar:';
+    content.innerHTML   = '<div class="quiz-q-text">' + q.arti + '</div><div class="quiz-q-pin">' + q.pinyin + '</div>';
+    audioBtn.style.display = 'none';
   }
 
-  // Build options
-  const all = Object.values(VOCAB).flat();
-  let wrongs = all.filter(w => w.hanzi !== q.hanzi).sort(() => Math.random() - 0.5).slice(0, 3);
-  let opts = [q, ...wrongs].sort(() => Math.random() - 0.5);
+  // Buat pilihan jawaban
+  var all = [];
+  var keys = Object.keys(VOCAB);
+  for (var i = 0; i < keys.length; i++) all = all.concat(VOCAB[keys[i]]);
+  var wrongs = all.filter(function(w) { return w.hanzi !== q.hanzi; })
+                  .sort(function() { return Math.random() - 0.5; })
+                  .slice(0, 3);
+  var opts = [q].concat(wrongs).sort(function() { return Math.random() - 0.5; });
 
-  const wrap = document.getElementById('quiz-opts');
+  var wrap = document.getElementById('quiz-opts');
   wrap.innerHTML = '';
-  opts.forEach(opt => {
-    const btn = document.createElement('div');
-    btn.className = 'quiz-opt';
-    btn.textContent = mode === 'hanzi' ? opt.arti : opt.hanzi;
-    btn.onclick = () => answerQuiz(btn, opt.hanzi === q.hanzi);
-    wrap.appendChild(btn);
-  });
-  document.getElementById('quiz-next-wrap').style.display = 'none';
+  for (var j = 0; j < opts.length; j++) {
+    (function(opt) {
+      var btn = document.createElement('div');
+      btn.className = 'quiz-opt';
+      if (mode === 'tebak-arti') {
+        btn.textContent = opt.arti;
+      } else {
+        btn.innerHTML = '<div class="quiz-opt-hanzi">' + opt.hanzi + '</div>';
+      }
+      btn.onclick = function() { answerQuiz(btn, opt.hanzi === q.hanzi, q, mode); };
+      wrap.appendChild(btn);
+    })(opts[j]);
+  }
+
+  document.getElementById('quiz-next').style.display = 'none';
+  var nextBtn = document.getElementById('quiz-next').querySelector('button');
+  if (nextBtn) nextBtn.textContent = 'Soal Berikutnya →';
 }
 
-function answerQuiz(btn, correct) {
+function answerQuiz(btn, correct, q, mode) {
   if (quizAnswered) return;
   quizAnswered = true;
+
   if (correct) {
     btn.classList.add('correct');
     quizScore++;
-    state.xp += 15;
+    appState.xp += 15;
+    speak(q.hanzi);
   } else {
     btn.classList.add('wrong');
-    // highlight correct
-    document.querySelectorAll('.quiz-opt').forEach((b,i) => {
-      const q = quizDeck[quizIdx];
-      const mode = document.getElementById('quiz-q-label').textContent.includes('arti') ? 'hanzi' : 'arti';
-      // simplified: mark all correct one green
-    });
+    // Highlight jawaban benar
+    var opts = document.querySelectorAll('.quiz-opt');
+    for (var i = 0; i < opts.length; i++) {
+      var txt = opts[i].querySelector('.quiz-opt-hanzi');
+      var match = txt ? txt.textContent === q.hanzi : opts[i].textContent === q.arti;
+      if (match) opts[i].classList.add('correct');
+    }
   }
+
   saveState();
-  document.getElementById('quiz-next-wrap').style.display = 'block';
+  var nextWrap = document.getElementById('quiz-next');
+  nextWrap.style.display = 'block';
   if (quizIdx >= quizDeck.length - 1) {
-    document.getElementById('quiz-next-wrap').querySelector('button').textContent = 'Lihat Hasil →';
+    nextWrap.querySelector('button').textContent = 'Lihat Hasil 🏆';
   }
 }
 
-function quizNext() {
+function nextQuestion() {
   quizIdx++;
-  if (quizIdx >= quizDeck.length) {
-    showQuizResult();
-  } else {
-    renderQuiz();
-  }
+  if (quizIdx >= quizDeck.length) showResult();
+  else renderQuiz();
 }
 
-function showQuizResult() {
-  state.kuis++;
-  const pct = Math.round(quizScore / quizDeck.length * 100);
-  if (!state.bestScore || quizScore > state.bestScore) state.bestScore = quizScore;
+function showResult() {
+  appState.kuis++;
+  if (!appState.bestScore || quizScore > appState.bestScore) appState.bestScore = quizScore;
   saveState();
-  document.getElementById('quiz-play').style.display = 'none';
+  document.getElementById('quiz-play').style.display   = 'none';
   document.getElementById('quiz-result').style.display = 'block';
-  document.getElementById('qr-score').textContent = `${quizScore}/${quizDeck.length}`;
-  let icon, label;
-  if (pct >= 90) { icon='🏆'; label='Luar biasa! Kamu sangat hebat!'; }
-  else if (pct >= 70) { icon='🎉'; label='Bagus! Terus semangat belajar!'; }
-  else if (pct >= 50) { icon='💪'; label='Lumayan! Latihan lagi ya!'; }
-  else { icon='📚'; label='Jangan menyerah, pelajari lagi!'; }
-  document.getElementById('qr-icon').textContent = icon;
-  document.getElementById('qr-label').textContent = label;
+  document.getElementById('res-score').textContent = quizScore + '/' + quizDeck.length;
+  var pct = Math.round(quizScore / quizDeck.length * 100);
+  var icon, label;
+  if (pct >= 90) { icon = '🏆'; label = 'Luar biasa! Kamu sangat hebat!'; }
+  else if (pct >= 70) { icon = '🎉'; label = 'Bagus! Terus semangat belajar!'; }
+  else if (pct >= 50) { icon = '💪'; label = 'Lumayan! Latihan lagi ya!'; }
+  else { icon = '📚'; label = 'Jangan menyerah, pelajari lagi!'; }
+  document.getElementById('res-icon').textContent  = icon;
+  document.getElementById('res-label').textContent = label;
 }
 
-// ════════════════════════════════════════
-//  MATERI
-// ════════════════════════════════════════
+// ═══════════════════════════════════════════════
+// MATERI
+// ═══════════════════════════════════════════════
 function renderLessons() {
-  document.getElementById('materi-list').style.display = 'block';
-  document.getElementById('materi-detail').style.display = 'none';
-  const list = document.getElementById('lesson-list');
+  document.getElementById('mat-list').style.display   = 'block';
+  document.getElementById('mat-detail').style.display = 'none';
+  var list = document.getElementById('lesson-list');
   list.innerHTML = '';
-  LESSONS.forEach((l, i) => {
-    const div = document.createElement('div');
-    div.className = 'lesson-card';
-    div.innerHTML = `
-      <div class="lesson-num ${l.done?'done':''}">${l.icon}</div>
-      <div class="lesson-info">
-        <div class="lesson-name">${l.name}</div>
-        <div class="lesson-desc">${l.desc}</div>
-      </div>
-      <div class="lesson-arrow">${l.done?'✓':'→'}</div>
-    `;
-    div.onclick = () => openLesson(l);
-    list.appendChild(div);
-  });
+  for (var i = 0; i < LESSONS.length; i++) {
+    (function(l) {
+      var div = document.createElement('div');
+      div.className = 'lesson-card';
+      div.innerHTML =
+        '<div class="lesson-icon" style="background:' + l.color + '22">' + l.icon + '</div>' +
+        '<div class="lesson-info">' +
+          '<div class="lesson-name">' + l.name + '</div>' +
+          '<div class="lesson-desc">' + l.desc + '</div>' +
+        '</div>' +
+        '<div class="lesson-arrow" style="color:' + (l.done ? 'var(--mint)' : 'var(--dark2)') + '">' + (l.done ? '✓' : '→') + '</div>';
+      div.onclick = function() { openLesson(l); };
+      list.appendChild(div);
+    })(LESSONS[i]);
+  }
 }
 
 function openLesson(lesson) {
-  document.getElementById('materi-list').style.display = 'none';
-  document.getElementById('materi-detail').style.display = 'block';
+  document.getElementById('mat-list').style.display   = 'none';
+  document.getElementById('mat-detail').style.display = 'block';
   document.getElementById('ld-title').textContent = lesson.name;
-  const table = document.getElementById('vocab-table');
-  table.innerHTML = '';
-  VOCAB[lesson.key].forEach(v => {
-    const row = document.createElement('div');
-    row.className = 'vocab-row';
-    row.innerHTML = `
-      <div class="vocab-hanzi">${v.hanzi}</div>
-      <div><div class="vocab-pinyin">${v.pinyin}</div></div>
-      <div class="vocab-arti">${v.arti}</div>
-    `;
-    table.appendChild(row);
-  });
+  var vlist = document.getElementById('vocab-list');
+  vlist.innerHTML = '';
+  var words = VOCAB[lesson.key];
+  for (var i = 0; i < words.length; i++) {
+    (function(v) {
+      var row = document.createElement('div');
+      row.className = 'vocab-row';
+      row.innerHTML =
+        '<div class="vocab-hanzi">' + v.hanzi + '</div>' +
+        '<div><div class="vocab-pin">' + v.pinyin + '</div><div class="vocab-arti">' + v.arti + '</div></div>' +
+        '<button class="audio-btn" onclick="speak(\'' + v.hanzi + '\')">🔊</button>';
+      vlist.appendChild(row);
+    })(words[i]);
+  }
   lesson.done = true;
-  window.scrollTo(0,0);
+  window.scrollTo(0, 0);
 }
 
-function backToList() {
-  renderLessons();
-}
+function backToList() { renderLessons(); }
 
-// ════════════════════════════════════════
-//  PROFIL
-// ════════════════════════════════════════
+// ═══════════════════════════════════════════════
+// PROFIL
+// ═══════════════════════════════════════════════
 function renderProfil() {
-  document.getElementById('profil-name').textContent = state.name;
-  const levels = [[0,'Pemula'],[100,'Dasar'],[300,'Menengah'],[700,'Mahir'],[1500,'Master']];
-  let lv = levels[0][1];
-  for (const [x,n] of levels) { if (state.xp >= x) lv = n; }
-  document.getElementById('profil-level').textContent = `⭐ Level ${lv}`;
-  document.getElementById('ps-xp').textContent = state.xp;
-  document.getElementById('ps-kata').textContent = state.kata;
-  document.getElementById('ps-kuis').textContent = state.kuis;
-  document.getElementById('pi-streak').textContent = state.streak + ' hari';
-  document.getElementById('pi-best').textContent = state.bestScore !== null ? `${state.bestScore}/10` : '-';
-  document.getElementById('pi-join').textContent = state.joinDate || '-';
+  document.getElementById('p-name').textContent  = appState.name;
+  document.getElementById('ps-xp').textContent   = appState.xp;
+  document.getElementById('ps-kata').textContent = appState.kata;
+  document.getElementById('ps-kuis').textContent = appState.kuis;
+  document.getElementById('p-streak').textContent = appState.streak + ' hari';
+  document.getElementById('p-best').textContent  = appState.bestScore !== null ? appState.bestScore + '/10' : '-';
+  document.getElementById('p-join').textContent  = appState.joinDate || '-';
+  var levels = [[0,'Pemula'],[100,'Dasar'],[300,'Menengah'],[700,'Mahir'],[1500,'Master']];
+  var lv = 'Pemula';
+  for (var i = 0; i < levels.length; i++) { if (appState.xp >= levels[i][0]) lv = levels[i][1]; }
+  document.getElementById('p-level').textContent = '⭐ Level ' + lv;
 }
 
 function editName() {
-  const n = prompt('Masukkan nama kamu:', state.name);
-  if (n && n.trim()) { state.name = n.trim(); saveState(); renderProfil(); }
+  var n = prompt('Masukkan nama kamu:', appState.name);
+  if (n && n.trim()) { appState.name = n.trim(); saveState(); renderProfil(); }
 }
 
 function resetData() {
   if (confirm('Reset semua progres? Data tidak bisa dikembalikan.')) {
-    state = { xp:0, kata:0, kuis:0, streak:0, bestScore:null, joinDate:state.joinDate, name:state.name, lastVisit:null };
-    saveState(); renderProfil(); showToast('Progres direset');
+    appState.xp = 0; appState.kata = 0; appState.kuis = 0;
+    appState.streak = 0; appState.bestScore = null; appState.lastVisit = null;
+    saveState(); renderProfil(); showToast('Progres direset ✅');
   }
 }
 
-// ════════════════════════════════════════
-//  UTILS
-// ════════════════════════════════════════
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2000);
-}
-
-// ════════════════════════════════════════
-//  INIT
-// ════════════════════════════════════════
+// ═══════════════════════════════════════════════
+// INIT — dijalankan paling terakhir
+// ═══════════════════════════════════════════════
 loadState();
 updateHome();
 </script>
