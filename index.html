@@ -1,316 +1,424 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <meta name="theme-color" content="#FF6B6B" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Mandarin App" />
-  <title>Mandarin App</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --coral:#FF6B6B; --orange:#FF9F43; --yellow:#FECA57;
-      --mint:#1DD1A1; --sky:#54A0FF; --purple:#A29BFE; --pink:#FD79A8;
-      --bg:#F0F4FF; --white:#FFFFFF; --dark:#2D3561; --dark2:#5A6A9A;
-      --border:rgba(45,53,97,0.10); --shadow:0 4px 20px rgba(45,53,97,0.12);
-      --radius:20px;
-    }
-    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-    body{background:var(--bg);color:var(--dark);font-family:'Nunito',sans-serif;min-height:100vh;overflow-x:hidden;}
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+<meta name="theme-color" content="#FF6B6B"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="Mandarin App"/>
+<title>Mandarin App</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --coral:#FF6B6B;--orange:#FF9F43;--yellow:#FECA57;
+  --mint:#1DD1A1;--sky:#54A0FF;--purple:#A29BFE;--pink:#FD79A8;
+  --red:#EE5A24;--green:#10AC84;--blue:#2E86DE;--indigo:#6C5CE7;
+  --bg:#F4F6FF;--white:#FFFFFF;--dark:#1E2A5E;--dark2:#5A6A9A;
+  --border:rgba(30,42,94,0.10);--shadow:0 6px 24px rgba(30,42,94,0.13);
+  --radius:22px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg);color:var(--dark);font-family:'Nunito',sans-serif;min-height:100vh;overflow-x:hidden;}
 
-    /* NAV */
-    .nav{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:2px solid var(--border);display:flex;justify-content:space-around;align-items:center;padding:8px 0 max(8px,env(safe-area-inset-bottom));z-index:100;box-shadow:0 -4px 20px rgba(45,53,97,0.08);}
-    .nav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;color:var(--dark2);font-size:10px;font-family:'Nunito',sans-serif;font-weight:700;padding:4px 12px;border-radius:14px;transition:all 0.2s;}
-    .nav-btn.active{color:var(--coral);}
-    .nav-icon{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;transition:all 0.2s;}
-    .nav-btn.active .nav-icon{background:rgba(255,107,107,0.15);}
+/* ── NAV ── */
+.nav{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1.5px solid var(--border);display:flex;justify-content:space-around;align-items:center;padding:6px 0 max(10px,env(safe-area-inset-bottom));z-index:200;box-shadow:0 -4px 24px rgba(30,42,94,0.09);}
+.nav-btn{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;cursor:pointer;color:var(--dark2);font-size:9px;font-family:'Nunito',sans-serif;font-weight:800;padding:4px 10px;border-radius:14px;transition:all .2s;letter-spacing:.3px;}
+.nav-btn.active{color:var(--coral);}
+.nicon{width:34px;height:34px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .2s;}
+.nav-btn.active .nicon{background:rgba(255,107,107,.15);}
 
-    /* SCREENS */
-    .screen{display:none;padding:0 0 90px;min-height:100vh;}
-    .screen.active{display:block;}
+/* ── SCREENS ── */
+.screen{display:none;padding:0 0 88px;min-height:100vh;animation:fadeIn .25s ease;}
+.screen.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-    /* HERO HEADERS */
-    .hero{padding:56px 24px 30px;border-radius:0 0 32px 32px;position:relative;overflow:hidden;}
-    .hero-tag{font-size:12px;font-weight:700;color:rgba(255,255,255,0.85);letter-spacing:1px;margin-bottom:4px;}
-    .hero-title{font-size:30px;font-weight:900;color:#fff;line-height:1.1;margin-bottom:4px;}
-    .hero-sub{font-size:13px;color:rgba(255,255,255,0.8);font-weight:600;}
-    .hero-deco{position:absolute;right:-10px;bottom:-14px;font-family:'Noto Serif SC',serif;font-size:110px;color:rgba(255,255,255,0.12);line-height:1;pointer-events:none;}
-    .hero-home{background:linear-gradient(135deg,var(--coral),var(--orange));}
-    .hero-fc  {background:linear-gradient(135deg,var(--purple),var(--pink));}
-    .hero-quiz{background:linear-gradient(135deg,var(--mint),var(--sky));}
-    .hero-mat {background:linear-gradient(135deg,var(--sky),var(--purple));}
-    .hero-prof{background:linear-gradient(135deg,var(--pink),var(--purple));}
+/* ── HERO HEADERS ── */
+.hero{padding:52px 22px 28px;border-radius:0 0 36px 36px;position:relative;overflow:hidden;}
+.hero-emoji-bg{position:absolute;right:-10px;bottom:-18px;font-size:120px;opacity:.12;line-height:1;pointer-events:none;font-family:'Noto Serif SC',serif;}
+.hero-tag{font-size:11px;font-weight:800;color:rgba(255,255,255,.8);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;}
+.hero-h{font-size:30px;font-weight:900;color:#fff;line-height:1.1;margin-bottom:4px;}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.82);font-weight:600;}
 
-    /* CARDS & SECTIONS */
-    .section-title{font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--dark2);padding:0 20px;margin:20px 0 10px;}
-    .card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);}
+/* ── SECTION TITLES ── */
+.sec-title{font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(--dark2);padding:0 20px;margin:22px 0 10px;}
 
-    /* HOME STATS */
-    .stats-row{display:flex;gap:12px;padding:18px 20px 4px;}
-    .stat-card{flex:1;background:var(--white);border-radius:var(--radius);padding:14px 10px;text-align:center;box-shadow:var(--shadow);}
-    .stat-num{font-size:22px;font-weight:900;}
-    .stat-lbl{font-size:10px;font-weight:700;color:var(--dark2);margin-top:2px;text-transform:uppercase;letter-spacing:.5px;}
+/* ── CARDS ── */
+.card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);}
 
-    /* HOME MENU */
-    .menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 20px;}
-    .menu-card{border-radius:var(--radius);padding:20px 16px;cursor:pointer;transition:all 0.2s;text-align:left;box-shadow:var(--shadow);position:relative;overflow:hidden;}
-    .menu-card:active{transform:scale(0.96);}
-    .menu-card-deco{position:absolute;right:-6px;bottom:-6px;font-size:52px;opacity:0.18;line-height:1;}
-    .mc-icon{font-size:28px;margin-bottom:10px;}
-    .mc-title{font-size:15px;font-weight:800;color:#fff;margin-bottom:3px;}
-    .mc-desc{font-size:11px;color:rgba(255,255,255,0.8);font-weight:600;}
-    .mc-coral{background:linear-gradient(135deg,#FF6B6B,#EE5A24);}
-    .mc-gold {background:linear-gradient(135deg,#FECA57,#FF9F43);}
-    .mc-mint {background:linear-gradient(135deg,#1DD1A1,#10AC84);}
-    .mc-sky  {background:linear-gradient(135deg,#54A0FF,#2E86DE);}
+/* ── PROGRESS BAR ── */
+.prog-wrap{height:6px;background:rgba(30,42,94,.08);margin:14px 20px 0;border-radius:99px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--coral),var(--orange));transition:width .4s ease;}
+.prog-lbl{text-align:center;color:var(--dark2);font-size:12px;font-weight:800;margin:8px 0 4px;}
 
-    /* WOTD */
-    .wotd-card{margin:12px 20px 0;padding:20px;display:flex;gap:16px;align-items:center;}
-    .wotd-hanzi{font-family:'Noto Serif SC',serif;font-size:52px;line-height:1;color:var(--coral);}
-    .wotd-pin{font-size:13px;color:var(--dark2);font-weight:700;}
-    .wotd-art{font-size:18px;font-weight:800;margin-top:2px;}
+/* ── AUDIO BTN ── */
+.audio-btn{display:inline-flex;align-items:center;gap:5px;margin-top:8px;background:var(--bg);border:2px solid var(--border);border-radius:99px;padding:5px 14px;font-size:12px;font-weight:800;color:var(--dark2);cursor:pointer;transition:all .2s;font-family:'Nunito',sans-serif;}
+.audio-btn:active{background:var(--coral);color:#fff;border-color:var(--coral);}
 
-    /* AUDIO BUTTON */
-    .audio-btn{display:inline-flex;align-items:center;gap:5px;margin-top:8px;background:var(--bg);border:2px solid var(--border);border-radius:99px;padding:5px 14px;font-size:12px;font-weight:700;color:var(--dark2);cursor:pointer;transition:all 0.2s;font-family:'Nunito',sans-serif;}
-    .audio-btn:active{background:var(--coral);color:#fff;border-color:var(--coral);}
+/* ══════════════════════════════
+   HOME
+══════════════════════════════ */
+.home-hero{background:linear-gradient(135deg,#FF6B6B,#FF9F43 55%,#FECA57);padding:52px 22px 28px;border-radius:0 0 36px 36px;position:relative;overflow:hidden;}
+.home-hero-img{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:80px;opacity:.22;pointer-events:none;}
 
-    /* PROGRESS BAR */
-    .prog-wrap{height:6px;background:rgba(45,53,97,0.1);margin:14px 20px 0;border-radius:99px;overflow:hidden;}
-    .prog-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--coral),var(--orange));transition:width .4s ease;}
-    .prog-label{text-align:center;color:var(--dark2);font-size:13px;font-weight:700;margin:8px 0;}
+.stats-row{display:flex;gap:10px;padding:16px 20px 4px;}
+.stat-card{flex:1;background:var(--white);border-radius:18px;padding:13px 8px;text-align:center;box-shadow:var(--shadow);}
+.stat-num{font-size:21px;font-weight:900;}
+.stat-lbl{font-size:9px;font-weight:800;color:var(--dark2);margin-top:2px;text-transform:uppercase;letter-spacing:.5px;}
 
-    /* FLASHCARD */
-    .fc-cats{display:flex;gap:8px;padding:14px 20px 4px;overflow-x:auto;scrollbar-width:none;}
-    .fc-cats::-webkit-scrollbar{display:none;}
-    .cat-pill{padding:7px 16px;border-radius:99px;font-size:12px;font-weight:800;white-space:nowrap;cursor:pointer;border:2px solid var(--border);background:var(--white);color:var(--dark2);transition:all .2s;font-family:'Nunito',sans-serif;}
-    .cat-pill.active{background:var(--dark);color:#fff;border-color:var(--dark);}
+.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 20px;}
+.menu-card{border-radius:var(--radius);padding:18px 14px;cursor:pointer;transition:all .2s;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+.menu-card:active{transform:scale(.96);}
+.menu-card-bg{position:absolute;right:-10px;bottom:-10px;font-size:60px;opacity:.18;line-height:1;pointer-events:none;}
+.mc-icon{font-size:26px;margin-bottom:8px;}
+.mc-title{font-size:14px;font-weight:900;color:#fff;margin-bottom:2px;}
+.mc-desc{font-size:10px;color:rgba(255,255,255,.82);font-weight:700;}
+.mc-coral{background:linear-gradient(135deg,#FF6B6B,#EE5A24);}
+.mc-gold{background:linear-gradient(135deg,#FECA57,#FF9F43);}
+.mc-mint{background:linear-gradient(135deg,#1DD1A1,#10AC84);}
+.mc-sky{background:linear-gradient(135deg,#54A0FF,#2E86DE);}
+.mc-purple{background:linear-gradient(135deg,#A29BFE,#6C5CE7);}
+.mc-pink{background:linear-gradient(135deg,#FD79A8,#e84393);}
 
-    .fc-wrap{padding:0 20px;perspective:1000px;}
-    .fc-card{width:100%;min-height:270px;position:relative;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.23,1,.32,1);cursor:pointer;}
-    .fc-card.flipped{transform:rotateY(180deg);}
-    .fc-face{position:absolute;width:100%;min-height:270px;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:24px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 20px;text-align:center;}
-    .fc-front{background:var(--white);box-shadow:var(--shadow);}
-    .fc-back{background:linear-gradient(135deg,var(--purple),var(--pink));transform:rotateY(180deg);box-shadow:0 8px 30px rgba(162,155,254,0.35);}
-    .fc-hanzi{font-family:'Noto Serif SC',serif;font-size:86px;line-height:1;color:var(--dark);}
-    .fc-hint{font-size:12px;color:var(--dark2);margin-top:8px;font-weight:600;}
-    .fc-pinyin{font-size:22px;color:var(--yellow);font-weight:800;margin-bottom:6px;}
-    .fc-meaning{font-size:18px;font-weight:800;color:#fff;}
-    .fc-example{font-size:12px;color:rgba(255,255,255,0.8);margin-top:10px;font-style:italic;line-height:1.5;}
-    .fc-btns{display:flex;gap:12px;padding:16px 20px;}
-    .fc-btn{flex:1;padding:14px;border:none;border-radius:var(--radius);font-size:14px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s;}
-    .fc-btn:active{transform:scale(0.96);}
-    .fc-wrong{background:#FFF0F0;color:var(--coral);border:2px solid rgba(255,107,107,.3);}
-    .fc-correct{background:#F0FFF8;color:var(--mint);border:2px solid rgba(29,209,161,.3);}
+/* WOTD */
+.wotd-card{margin:12px 20px 0;padding:18px 20px;display:flex;gap:14px;align-items:center;position:relative;overflow:hidden;}
+.wotd-hz{font-family:'Noto Serif SC',serif;font-size:50px;line-height:1;color:var(--coral);flex-shrink:0;}
+.wotd-pin{font-size:13px;color:var(--dark2);font-weight:700;}
+.wotd-art{font-size:17px;font-weight:900;margin-top:2px;}
+.wotd-bg{position:absolute;right:-4px;bottom:-8px;font-family:'Noto Serif SC',serif;font-size:80px;color:var(--coral);opacity:.06;pointer-events:none;line-height:1;}
 
-    /* QUIZ */
-    .quiz-tabs{display:flex;gap:10px;padding:14px 20px 4px;}
-    .quiz-tab{flex:1;padding:10px 6px;border-radius:14px;font-size:12px;font-weight:800;cursor:pointer;text-align:center;background:var(--white);color:var(--dark2);border:2px solid var(--border);transition:all .2s;font-family:'Nunito',sans-serif;}
-    .quiz-tab.active{background:var(--dark);color:#fff;border-color:var(--dark);}
-    .quiz-status{display:flex;justify-content:space-between;align-items:center;padding:10px 20px 6px;}
-    .quiz-count{font-size:13px;font-weight:800;color:var(--dark2);}
-    .quiz-score-badge{font-size:13px;font-weight:800;color:var(--mint);background:#F0FFF8;padding:4px 12px;border-radius:99px;}
-    .quiz-q-box{margin:0 20px 14px;padding:26px 20px;text-align:center;}
-    .quiz-q-label{font-size:11px;color:var(--dark2);letter-spacing:2px;text-transform:uppercase;font-weight:800;margin-bottom:10px;}
-    .quiz-q-hanzi{font-family:'Noto Serif SC',serif;font-size:76px;line-height:1;color:var(--dark);}
-    .quiz-q-text{font-size:20px;font-weight:800;color:var(--dark);}
-    .quiz-q-pin{font-size:13px;color:var(--dark2);font-weight:700;margin-top:4px;}
-    .quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 20px;}
-    .quiz-opt{background:var(--white);border:2px solid var(--border);border-radius:16px;padding:16px 10px;font-size:14px;font-weight:800;cursor:pointer;text-align:center;transition:all .2s;font-family:'Nunito',sans-serif;color:var(--dark);box-shadow:0 2px 8px rgba(45,53,97,0.06);}
-    .quiz-opt-hanzi{font-family:'Noto Serif SC',serif;font-size:34px;line-height:1.2;}
-    .quiz-opt:active{transform:scale(0.97);}
-    .quiz-opt.correct{background:#F0FFF8;border-color:var(--mint);color:var(--mint);}
-    .quiz-opt.wrong{background:#FFF0F0;border-color:var(--coral);color:var(--coral);}
-    .quiz-next-wrap{padding:14px 20px;display:none;}
+/* Highlight Banner */
+.highlight-banner{margin:12px 20px 0;border-radius:var(--radius);padding:16px 18px;display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#667eea,#764ba2);box-shadow:0 6px 20px rgba(102,126,234,.35);}
+.hl-icon{font-size:36px;}
+.hl-title{font-size:14px;font-weight:900;color:#fff;}
+.hl-sub{font-size:11px;color:rgba(255,255,255,.82);font-weight:600;margin-top:2px;}
 
-    /* RESULT */
-    .result-box{text-align:center;padding:50px 24px;}
-    .result-icon{font-size:64px;margin-bottom:12px;}
-    .result-score{font-size:52px;font-weight:900;color:var(--coral);}
-    .result-label{color:var(--dark2);font-size:15px;font-weight:700;margin-bottom:28px;}
+/* ══════════════════════════════
+   FLASHCARD
+══════════════════════════════ */
+.fc-cats{display:flex;gap:8px;padding:12px 20px 4px;overflow-x:auto;scrollbar-width:none;}
+.fc-cats::-webkit-scrollbar{display:none;}
+.cat-pill{padding:6px 14px;border-radius:99px;font-size:11px;font-weight:800;white-space:nowrap;cursor:pointer;border:2px solid var(--border);background:var(--white);color:var(--dark2);transition:all .2s;font-family:'Nunito',sans-serif;}
+.cat-pill.active{background:var(--dark);color:#fff;border-color:var(--dark);}
 
-    /* BUTTONS */
-    .btn-primary{background:linear-gradient(135deg,var(--coral),var(--orange));color:#fff;border:none;padding:16px 32px;border-radius:var(--radius);font-size:16px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;box-shadow:0 4px 16px rgba(255,107,107,0.35);width:100%;display:block;}
-    .btn-primary:active{transform:scale(0.97);}
-    .btn-secondary{background:var(--white);color:var(--dark);border:2px solid var(--border);padding:14px 32px;border-radius:var(--radius);font-size:15px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s;width:100%;display:block;margin-top:10px;}
-    .btn-secondary:active{transform:scale(0.97);}
+.fc-wrap{padding:0 20px;perspective:1200px;}
+.fc-card{width:100%;min-height:280px;position:relative;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.23,1,.32,1);cursor:pointer;}
+.fc-card.flipped{transform:rotateY(180deg);}
+.fc-face{position:absolute;width:100%;min-height:280px;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:26px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 20px;text-align:center;}
+.fc-front{background:var(--white);box-shadow:var(--shadow);}
+.fc-back{background:linear-gradient(135deg,var(--purple),var(--indigo));transform:rotateY(180deg);box-shadow:0 10px 32px rgba(108,92,231,.35);}
+.fc-hz{font-family:'Noto Serif SC',serif;font-size:84px;line-height:1;color:var(--dark);}
+.fc-cat-badge{margin-top:8px;background:var(--bg);padding:3px 12px;border-radius:99px;font-size:10px;font-weight:800;color:var(--dark2);}
+.fc-hint{font-size:11px;color:var(--dark2);margin-top:10px;font-weight:700;}
+.fc-py{font-size:21px;color:var(--yellow);font-weight:900;margin-bottom:6px;}
+.fc-meaning{font-size:17px;font-weight:800;color:#fff;}
+.fc-ex{font-size:11px;color:rgba(255,255,255,.82);margin-top:10px;font-style:italic;line-height:1.6;}
+.fc-btns{display:flex;gap:12px;padding:14px 20px;}
+.fc-btn{flex:1;padding:14px;border:none;border-radius:var(--radius);font-size:13px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s;}
+.fc-btn:active{transform:scale(.96);}
+.fc-wrong{background:#FFF0F0;color:var(--coral);border:2px solid rgba(255,107,107,.3);}
+.fc-right{background:#F0FFF8;color:var(--mint);border:2px solid rgba(29,209,161,.3);}
 
-    /* MATERI */
-    .lesson-list{padding:0 20px;display:flex;flex-direction:column;gap:12px;}
-    .lesson-card{background:var(--white);border-radius:var(--radius);padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .2s;box-shadow:var(--shadow);}
-    .lesson-card:active{transform:scale(0.98);}
-    .lesson-icon{width:48px;height:48px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
-    .lesson-info{flex:1;}
-    .lesson-name{font-size:15px;font-weight:800;}
-    .lesson-desc{font-size:12px;color:var(--dark2);font-weight:600;margin-top:2px;}
-    .lesson-arrow{color:var(--dark2);font-size:18px;font-weight:800;}
-    .ld-header{padding:56px 20px 24px;border-radius:0 0 32px 32px;display:flex;align-items:flex-start;gap:12px;}
-    .back-btn{background:rgba(255,255,255,.25);border:none;color:#fff;font-size:20px;cursor:pointer;padding:6px 12px;border-radius:12px;font-weight:800;font-family:'Nunito',sans-serif;}
-    .ld-label{font-size:11px;color:rgba(255,255,255,.75);letter-spacing:2px;text-transform:uppercase;font-weight:800;}
-    .ld-title{font-size:22px;font-weight:900;color:#fff;}
-    .vocab-list{padding:14px 20px;display:flex;flex-direction:column;gap:10px;}
-    .vocab-row{background:var(--white);border-radius:16px;padding:14px 16px;display:grid;grid-template-columns:60px 1fr auto;align-items:center;gap:8px;box-shadow:var(--shadow);}
-    .vocab-hanzi{font-family:'Noto Serif SC',serif;font-size:30px;color:var(--coral);}
-    .vocab-pin{font-size:12px;color:var(--dark2);font-weight:700;}
-    .vocab-arti{font-size:14px;font-weight:800;}
+/* ══════════════════════════════
+   KUIS
+══════════════════════════════ */
+.quiz-tabs{display:flex;gap:8px;padding:12px 20px 4px;overflow-x:auto;scrollbar-width:none;}
+.quiz-tabs::-webkit-scrollbar{display:none;}
+.qtab{padding:8px 14px;border-radius:99px;font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap;background:var(--white);color:var(--dark2);border:2px solid var(--border);transition:all .2s;font-family:'Nunito',sans-serif;}
+.qtab.active{background:var(--dark);color:#fff;border-color:var(--dark);}
+.quiz-status{display:flex;justify-content:space-between;align-items:center;padding:8px 20px 4px;}
+.quiz-count{font-size:12px;font-weight:800;color:var(--dark2);}
+.quiz-score-badge{font-size:12px;font-weight:800;color:var(--mint);background:#F0FFF8;padding:4px 12px;border-radius:99px;}
+.quiz-q-box{margin:0 20px 14px;padding:24px 18px;text-align:center;}
+.quiz-q-lbl{font-size:10px;color:var(--dark2);letter-spacing:2px;text-transform:uppercase;font-weight:800;margin-bottom:10px;}
+.quiz-q-hz{font-family:'Noto Serif SC',serif;font-size:72px;line-height:1;color:var(--dark);}
+.quiz-q-txt{font-size:19px;font-weight:800;color:var(--dark);}
+.quiz-q-pin{font-size:12px;color:var(--dark2);font-weight:700;margin-top:4px;}
+.quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 20px;}
+.quiz-opt{background:var(--white);border:2px solid var(--border);border-radius:16px;padding:14px 8px;font-size:13px;font-weight:800;cursor:pointer;text-align:center;transition:all .2s;font-family:'Nunito',sans-serif;color:var(--dark);box-shadow:0 2px 8px rgba(30,42,94,.06);}
+.quiz-opt-hz{font-family:'Noto Serif SC',serif;font-size:32px;line-height:1.2;}
+.quiz-opt:active{transform:scale(.97);}
+.quiz-opt.correct{background:#F0FFF8;border-color:var(--mint);color:var(--mint);}
+.quiz-opt.wrong{background:#FFF0F0;border-color:var(--coral);color:var(--coral);}
+.quiz-next-wrap{padding:12px 20px;display:none;}
+.result-box{text-align:center;padding:48px 24px;}
+.result-icon{font-size:64px;margin-bottom:10px;}
+.result-score{font-size:52px;font-weight:900;color:var(--coral);}
+.result-lbl{color:var(--dark2);font-size:14px;font-weight:700;margin-bottom:26px;}
+.btn-primary{background:linear-gradient(135deg,var(--coral),var(--orange));color:#fff;border:none;padding:15px 28px;border-radius:var(--radius);font-size:15px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;box-shadow:0 4px 16px rgba(255,107,107,.35);width:100%;display:block;transition:all .2s;}
+.btn-primary:active{transform:scale(.97);}
+.btn-secondary{background:var(--white);color:var(--dark);border:2px solid var(--border);padding:13px 28px;border-radius:var(--radius);font-size:14px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;width:100%;display:block;margin-top:10px;transition:all .2s;}
+.btn-secondary:active{transform:scale(.97);}
 
-    /* PROFIL */
-    .profil-avatar{width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 12px;border:3px solid rgba(255,255,255,.4);}
-    .profil-name{font-size:22px;font-weight:900;color:#fff;text-align:center;}
-    .profil-level{color:rgba(255,255,255,.85);font-size:13px;font-weight:700;text-align:center;margin-top:4px;}
-    .ps-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:16px 20px 4px;}
-    .ps-card{background:var(--white);border-radius:var(--radius);padding:14px 8px;text-align:center;box-shadow:var(--shadow);}
-    .ps-val{font-size:22px;font-weight:900;color:var(--coral);}
-    .ps-lbl{font-size:10px;color:var(--dark2);font-weight:700;text-transform:uppercase;margin-top:2px;}
-    .profil-section{padding:0 20px 16px;}
-    .profil-item{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer;}
-    .profil-item-left{display:flex;align-items:center;gap:12px;}
-    .profil-item-ico{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;background:var(--bg);}
-    .profil-item-lbl{font-size:15px;font-weight:700;}
-    .profil-item-val{font-size:13px;color:var(--dark2);font-weight:700;}
+/* ══════════════════════════════
+   MATERI (LESSON LIST)
+══════════════════════════════ */
+.lesson-list{padding:0 20px;display:flex;flex-direction:column;gap:12px;}
+.lesson-card{background:var(--white);border-radius:var(--radius);padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .2s;box-shadow:var(--shadow);}
+.lesson-card:active{transform:scale(.98);}
+.l-icon{width:50px;height:50px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.l-info{flex:1;}
+.l-name{font-size:14px;font-weight:900;}
+.l-desc{font-size:11px;color:var(--dark2);font-weight:600;margin-top:2px;}
+.l-arrow{font-size:16px;font-weight:800;color:var(--dark2);}
+.l-badge{font-size:9px;font-weight:800;padding:2px 8px;border-radius:99px;display:inline-block;margin-top:4px;}
 
-    /* TOAST */
-    .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;padding:12px 22px;border-radius:99px;font-size:13px;font-weight:700;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;box-shadow:var(--shadow);}
-    .toast.show{opacity:1;}
-  </style>
+/* LESSON DETAIL */
+.ld-header{padding:52px 20px 22px;border-radius:0 0 36px 36px;display:flex;align-items:flex-start;gap:12px;}
+.back-btn{background:rgba(255,255,255,.25);border:none;color:#fff;font-size:18px;cursor:pointer;padding:6px 12px;border-radius:12px;font-weight:800;font-family:'Nunito',sans-serif;flex-shrink:0;margin-top:2px;}
+.ld-label{font-size:10px;color:rgba(255,255,255,.75);letter-spacing:2px;text-transform:uppercase;font-weight:800;}
+.ld-title{font-size:21px;font-weight:900;color:#fff;}
+.vocab-list{padding:12px 20px;display:flex;flex-direction:column;gap:10px;}
+.vocab-row{background:var(--white);border-radius:16px;padding:13px 14px;display:grid;grid-template-columns:58px 1fr auto;align-items:center;gap:8px;box-shadow:var(--shadow);}
+.v-hz{font-family:'Noto Serif SC',serif;font-size:28px;color:var(--coral);}
+.v-pin{font-size:11px;color:var(--dark2);font-weight:700;}
+.v-art{font-size:13px;font-weight:800;}
+
+/* ══════════════════════════════
+   GRAMMAR SCREEN
+══════════════════════════════ */
+.grammar-hero{background:linear-gradient(135deg,#667eea,#764ba2);}
+.gram-list{padding:0 20px;display:flex;flex-direction:column;gap:12px;}
+.gram-card{background:var(--white);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);cursor:pointer;transition:all .2s;}
+.gram-card:active{transform:scale(.98);}
+.gram-card-top{padding:16px 18px;display:flex;align-items:center;gap:12px;}
+.gram-num{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;flex-shrink:0;}
+.gram-title{font-size:14px;font-weight:900;}
+.gram-sub{font-size:11px;color:var(--dark2);font-weight:600;margin-top:2px;}
+.gram-arrow{margin-left:auto;font-size:16px;color:var(--dark2);font-weight:800;}
+.gram-detail{display:none;padding:0 18px 18px;border-top:1px solid var(--border);}
+.gram-detail.open{display:block;}
+.gram-section{margin-top:14px;}
+.gram-section-title{font-size:11px;font-weight:900;letter-spacing:1px;text-transform:uppercase;color:var(--dark2);margin-bottom:8px;}
+.gram-explanation{font-size:13px;font-weight:600;color:var(--dark);line-height:1.7;background:var(--bg);border-radius:14px;padding:12px 14px;}
+.gram-pattern{font-family:'Noto Serif SC',serif;font-size:15px;background:linear-gradient(135deg,#667eea22,#764ba222);border-radius:12px;padding:10px 14px;margin-top:8px;text-align:center;color:var(--indigo);font-weight:700;}
+.gram-examples{display:flex;flex-direction:column;gap:8px;margin-top:8px;}
+.gram-ex{background:var(--bg);border-radius:14px;padding:12px 14px;border-left:3px solid var(--indigo);}
+.gram-ex-hz{font-family:'Noto Serif SC',serif;font-size:16px;color:var(--dark);margin-bottom:2px;}
+.gram-ex-py{font-size:11px;color:var(--dark2);font-weight:700;margin-bottom:2px;}
+.gram-ex-id{font-size:12px;color:var(--dark);font-weight:700;}
+.gram-note{background:rgba(255,202,87,.15);border-radius:12px;padding:10px 14px;margin-top:8px;font-size:12px;font-weight:700;color:#9A7D0A;border-left:3px solid var(--yellow);}
+
+/* ══════════════════════════════
+   BACA HANZI
+══════════════════════════════ */
+.baca-hero{background:linear-gradient(135deg,#f093fb,#f5576c);}
+.story-list{padding:0 20px;display:flex;flex-direction:column;gap:12px;}
+.story-card{background:var(--white);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);cursor:pointer;transition:all .2s;}
+.story-card:active{transform:scale(.98);}
+.story-card-img{height:110px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.story-card-img-bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:80px;opacity:.15;font-family:'Noto Serif SC',serif;}
+.story-card-body{padding:14px 16px;}
+.story-card-title{font-size:14px;font-weight:900;}
+.story-card-meta{display:flex;gap:8px;margin-top:6px;align-items:center;}
+.story-tag{font-size:9px;font-weight:800;padding:3px 9px;border-radius:99px;}
+.story-card-desc{font-size:11px;color:var(--dark2);font-weight:600;margin-top:4px;}
+
+/* READING SCREEN */
+.reading-screen{display:none;}
+.reading-screen.active{display:block;}
+.read-header{padding:52px 20px 22px;border-radius:0 0 36px 36px;display:flex;align-items:flex-start;gap:12px;}
+.read-slides{padding:16px 20px 0;}
+.slide{display:none;}
+.slide.active{display:block;}
+.slide-hz{font-family:'Noto Serif SC',serif;font-size:22px;line-height:2;color:var(--dark);background:var(--white);border-radius:22px;padding:22px 20px;box-shadow:var(--shadow);letter-spacing:2px;}
+.slide-hz .char{display:inline-block;cursor:pointer;transition:color .15s;}
+.slide-hz .char:active{color:var(--coral);}
+.slide-pinyin-wrap{background:var(--white);border-radius:22px;padding:20px;box-shadow:var(--shadow);margin-top:14px;}
+.slide-pinyin-title{font-size:10px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(--dark2);margin-bottom:12px;}
+.pinyin-line{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+.pinyin-unit{text-align:center;}
+.pinyin-unit .p-hz{font-family:'Noto Serif SC',serif;font-size:18px;color:var(--dark);}
+.pinyin-unit .p-py{font-size:10px;color:var(--coral);font-weight:800;}
+.slide-explain{background:linear-gradient(135deg,rgba(102,126,234,.08),rgba(118,75,162,.08));border-radius:16px;padding:14px 16px;margin-top:12px;border-left:3px solid var(--indigo);}
+.slide-explain-title{font-size:10px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:var(--indigo);margin-bottom:6px;}
+.slide-explain-txt{font-size:13px;font-weight:700;color:var(--dark);line-height:1.7;}
+.slide-nav{display:flex;gap:12px;padding:16px 20px 8px;}
+.slide-btn{flex:1;padding:13px;border:none;border-radius:var(--radius);font-size:13px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s;}
+.slide-btn:active{transform:scale(.97);}
+.slide-prev{background:var(--white);color:var(--dark);border:2px solid var(--border);}
+.slide-next{background:linear-gradient(135deg,#f093fb,#f5576c);color:#fff;box-shadow:0 4px 14px rgba(240,147,251,.35);}
+.slide-dots{display:flex;justify-content:center;gap:6px;padding:4px 0 16px;}
+.slide-dot{width:8px;height:8px;border-radius:99px;background:var(--border);transition:all .3s;}
+.slide-dot.active{background:var(--coral);width:22px;}
+
+/* ══════════════════════════════
+   PROFIL
+══════════════════════════════ */
+.profil-hero{background:linear-gradient(135deg,#FD79A8,#A29BFE);}
+.profil-avatar{width:78px;height:78px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 10px;border:3px solid rgba(255,255,255,.4);}
+.ps-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:14px 20px 4px;}
+.ps-card{background:var(--white);border-radius:18px;padding:12px 6px;text-align:center;box-shadow:var(--shadow);}
+.ps-val{font-size:21px;font-weight:900;color:var(--coral);}
+.ps-lbl{font-size:9px;color:var(--dark2);font-weight:800;text-transform:uppercase;margin-top:2px;letter-spacing:.5px;}
+.profil-section{padding:0 20px 14px;}
+.p-item{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--border);cursor:pointer;}
+.p-item-left{display:flex;align-items:center;gap:12px;}
+.p-ico{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:17px;background:var(--bg);}
+.p-lbl{font-size:14px;font-weight:700;}
+.p-val{font-size:12px;color:var(--dark2);font-weight:700;}
+
+/* ── TOAST ── */
+.toast{position:fixed;top:18px;left:50%;transform:translateX(-50%);background:var(--dark);color:#fff;padding:11px 20px;border-radius:99px;font-size:12px;font-weight:800;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;box-shadow:var(--shadow);}
+.toast.show{opacity:1;}
+</style>
 </head>
 <body>
 
-<!-- ═══ HOME ═══ -->
+<!-- ════════════ HOME ════════════ -->
 <div class="screen active" id="screen-home">
-  <div class="hero hero-home">
-    <div class="hero-tag">🌟 Selamat Belajar!</div>
-    <div class="hero-title">Mandarin App</div>
-    <div class="hero-sub">Belajar bahasa Mandarin jadi seru!</div>
-    <div class="hero-deco">中</div>
+  <div class="home-hero">
+    <div class="hero-tag">🌟 Selamat Datang!</div>
+    <div class="hero-h">Mandarin App</div>
+    <div class="hero-sub">Kuasai Mandarin untuk karir globalmu!</div>
+    <div class="home-hero-img">🐉</div>
   </div>
+
   <div class="stats-row">
-    <div class="stat-card"><div class="stat-num" id="stat-streak" style="color:var(--coral)">0</div><div class="stat-lbl">🔥 Streak</div></div>
-    <div class="stat-card"><div class="stat-num" id="stat-kata" style="color:var(--mint)">0</div><div class="stat-lbl">✅ Hafal</div></div>
-    <div class="stat-card"><div class="stat-num" id="stat-xp" style="color:var(--sky)">0</div><div class="stat-lbl">⭐ XP</div></div>
+    <div class="stat-card"><div class="stat-num" id="st-streak" style="color:var(--coral)">0</div><div class="stat-lbl">🔥 Streak</div></div>
+    <div class="stat-card"><div class="stat-num" id="st-kata" style="color:var(--mint)">0</div><div class="stat-lbl">✅ Hafal</div></div>
+    <div class="stat-card"><div class="stat-num" id="st-xp" style="color:var(--sky)">0</div><div class="stat-lbl">⭐ XP</div></div>
   </div>
-  <div class="section-title">Menu Utama</div>
+
+  <!-- Highlight Banner -->
+  <div class="highlight-banner" onclick="goScreen('screen-baca')" style="cursor:pointer;">
+    <div class="hl-icon">📖</div>
+    <div>
+      <div class="hl-title">Latihan Baca Hanzi</div>
+      <div class="hl-sub">Cerita & artikel lengkap dalam Hanzi</div>
+    </div>
+    <div style="color:rgba(255,255,255,.7);font-size:18px;margin-left:auto;">→</div>
+  </div>
+
+  <div class="sec-title">Menu Utama</div>
   <div class="menu-grid">
     <div class="menu-card mc-coral" onclick="goScreen('screen-fc')">
-      <div class="mc-icon">🃏</div><div class="mc-title">Flashcard</div><div class="mc-desc">Hafal kosakata baru</div>
-      <div class="menu-card-deco">🃏</div>
+      <div class="mc-icon">🃏</div><div class="mc-title">Flashcard</div><div class="mc-desc">Hafal kosakata</div>
+      <div class="menu-card-bg">🃏</div>
     </div>
     <div class="menu-card mc-gold" onclick="goScreen('screen-quiz')">
-      <div class="mc-icon">🎯</div><div class="mc-title">Kuis</div><div class="mc-desc">Uji kemampuanmu</div>
-      <div class="menu-card-deco">🎯</div>
+      <div class="mc-icon">🎯</div><div class="mc-title">Kuis</div><div class="mc-desc">Uji kemampuan</div>
+      <div class="menu-card-bg">🎯</div>
     </div>
     <div class="menu-card mc-mint" onclick="goScreen('screen-materi')">
-      <div class="mc-icon">📚</div><div class="mc-title">Materi</div><div class="mc-desc">Pelajari topik baru</div>
-      <div class="menu-card-deco">📚</div>
+      <div class="mc-icon">💼</div><div class="mc-title">Kosakata Kerja</div><div class="mc-desc">Dunia pekerjaan</div>
+      <div class="menu-card-bg">💼</div>
     </div>
-    <div class="menu-card mc-sky" onclick="goScreen('screen-profil')">
-      <div class="mc-icon">👤</div><div class="mc-title">Profil</div><div class="mc-desc">Lihat progresmu</div>
-      <div class="menu-card-deco">👤</div>
+    <div class="menu-card mc-purple" onclick="goScreen('screen-grammar')">
+      <div class="mc-icon">📐</div><div class="mc-title">Grammar</div><div class="mc-desc">Tata bahasa dasar</div>
+      <div class="menu-card-bg">📐</div>
+    </div>
+    <div class="menu-card mc-sky" onclick="goScreen('screen-baca')">
+      <div class="mc-icon">📖</div><div class="mc-title">Baca Hanzi</div><div class="mc-desc">Latihan membaca</div>
+      <div class="menu-card-bg">📖</div>
+    </div>
+    <div class="menu-card mc-pink" onclick="goScreen('screen-profil')">
+      <div class="mc-icon">👤</div><div class="mc-title">Profil</div><div class="mc-desc">Progresmu</div>
+      <div class="menu-card-bg">👤</div>
     </div>
   </div>
-  <div class="section-title">Kata Hari Ini</div>
+
+  <div class="sec-title">Kata Hari Ini</div>
   <div class="card wotd-card">
-    <div>
-      <div class="wotd-hanzi" id="wotd-hz">你好</div>
-      <button class="audio-btn" onclick="speak(document.getElementById('wotd-hz').textContent)">🔊 Dengarkan</button>
-    </div>
+    <div class="wotd-hz" id="wotd-hz">你好</div>
     <div>
       <div class="wotd-pin" id="wotd-py">Nǐ hǎo</div>
       <div class="wotd-art" id="wotd-ar">Halo / Hai</div>
+      <button class="audio-btn" onclick="speak(document.getElementById('wotd-hz').textContent)">🔊 Dengarkan</button>
     </div>
+    <div class="wotd-bg" id="wotd-bg">你好</div>
   </div>
   <div style="height:10px"></div>
 </div>
 
-<!-- ═══ FLASHCARD ═══ -->
+<!-- ════════════ FLASHCARD ════════════ -->
 <div class="screen" id="screen-fc">
-  <div class="hero hero-fc">
+  <div class="hero" style="background:linear-gradient(135deg,#A29BFE,#6C5CE7)">
     <div class="hero-tag">🃏 Latihan</div>
-    <div class="hero-title">Flashcard</div>
+    <div class="hero-h">Flashcard</div>
     <div class="hero-sub">Sentuh kartu untuk lihat artinya</div>
-    <div class="hero-deco">卡</div>
+    <div class="hero-emoji-bg">卡</div>
   </div>
   <div class="fc-cats" id="fc-cats"></div>
   <div class="prog-wrap"><div class="prog-fill" id="fc-prog"></div></div>
-  <div class="prog-label" id="fc-label">Kartu 1 dari 10</div>
+  <div class="prog-lbl" id="fc-lbl">Kartu 1 dari 10</div>
   <div class="fc-wrap">
     <div class="fc-card" id="fc-card" onclick="flipCard()">
       <div class="fc-face fc-front">
-        <div class="fc-hanzi" id="fc-hz">你好</div>
+        <div class="fc-hz" id="fc-hz">你好</div>
+        <div class="fc-cat-badge" id="fc-badge">Sapaan</div>
         <button class="audio-btn" onclick="event.stopPropagation();speak(document.getElementById('fc-hz').textContent)">🔊 Dengarkan</button>
         <div class="fc-hint">👆 Sentuh untuk lihat arti</div>
       </div>
       <div class="fc-face fc-back">
-        <div class="fc-pinyin" id="fc-py">Nǐ hǎo</div>
-        <div class="fc-meaning" id="fc-meaning">Halo / Hai</div>
-        <div class="fc-example" id="fc-ex"></div>
+        <div class="fc-py" id="fc-py">Nǐ hǎo</div>
+        <div class="fc-meaning" id="fc-meaning">Halo</div>
+        <div class="fc-ex" id="fc-ex"></div>
       </div>
     </div>
   </div>
   <div class="fc-btns">
     <button class="fc-btn fc-wrong" onclick="fcAnswer(false)">✗ Belum Hafal</button>
-    <button class="fc-btn fc-correct" onclick="fcAnswer(true)">✓ Sudah Hafal</button>
+    <button class="fc-btn fc-right" onclick="fcAnswer(true)">✓ Sudah Hafal</button>
   </div>
 </div>
 
-<!-- ═══ KUIS ═══ -->
+<!-- ════════════ KUIS ════════════ -->
 <div class="screen" id="screen-quiz">
-  <div class="hero hero-quiz">
+  <div class="hero" style="background:linear-gradient(135deg,var(--mint),var(--sky))">
     <div class="hero-tag">🎯 Latihan</div>
-    <div class="hero-title">Kuis</div>
-    <div class="hero-sub">Pilih mode latihan di bawah</div>
-    <div class="hero-deco">题</div>
+    <div class="hero-h">Kuis</div>
+    <div class="hero-sub">Pilih mode latihan</div>
+    <div class="hero-emoji-bg">题</div>
   </div>
-  <div class="quiz-tabs">
-    <button class="quiz-tab active" id="qtab-campuran" onclick="setMode('campuran')">🔀 Campuran</button>
-    <button class="quiz-tab" id="qtab-hanzi" onclick="setMode('hanzi')">汉字 Hanzi</button>
-    <button class="quiz-tab" id="qtab-arti" onclick="setMode('arti')">📝 Arti</button>
+  <div class="quiz-tabs" id="quiz-tabs">
+    <button class="qtab active" id="qtab-campuran" onclick="setMode('campuran')">🔀 Campuran</button>
+    <button class="qtab" id="qtab-hanzi" onclick="setMode('hanzi')">汉字 Hanzi</button>
+    <button class="qtab" id="qtab-arti" onclick="setMode('arti')">📝 Arti</button>
+    <button class="qtab" id="qtab-kerja" onclick="setMode('kerja')">💼 Pekerjaan</button>
   </div>
   <div id="quiz-play">
     <div class="quiz-status">
-      <div class="quiz-count" id="quiz-count">Soal 1 / 10</div>
+      <div class="quiz-count" id="quiz-count">Soal 1/10</div>
       <div class="quiz-score-badge" id="quiz-score">⭐ 0</div>
     </div>
     <div class="prog-wrap" style="margin-top:0"><div class="prog-fill" id="quiz-prog"></div></div>
     <div class="card quiz-q-box">
-      <div class="quiz-q-label" id="quiz-label">Apa arti karakter ini?</div>
+      <div class="quiz-q-lbl" id="quiz-lbl">Apa arti karakter ini?</div>
       <div id="quiz-content"></div>
       <button class="audio-btn" id="quiz-audio" onclick="speak(currentHz)" style="display:none">🔊 Dengarkan</button>
     </div>
     <div class="quiz-opts" id="quiz-opts"></div>
     <div class="quiz-next-wrap" id="quiz-next">
-      <button class="btn-primary" onclick="nextQuestion()">Soal Berikutnya →</button>
+      <button class="btn-primary" onclick="nextQ()">Soal Berikutnya →</button>
     </div>
   </div>
   <div id="quiz-result" style="display:none">
     <div class="result-box">
       <div class="result-icon" id="res-icon">🎉</div>
-      <div class="result-score" id="res-score">8/10</div>
-      <div class="result-label" id="res-label">Bagus sekali!</div>
+      <div class="result-score" id="res-score">0/10</div>
+      <div class="result-lbl" id="res-lbl">Bagus sekali!</div>
       <button class="btn-primary" onclick="startQuiz()">🔄 Ulangi Kuis</button>
       <button class="btn-secondary" onclick="goScreen('screen-home')">🏠 Kembali</button>
     </div>
   </div>
 </div>
 
-<!-- ═══ MATERI ═══ -->
+<!-- ════════════ MATERI / KOSAKATA KERJA ════════════ -->
 <div class="screen" id="screen-materi">
   <div id="mat-list">
-    <div class="hero hero-mat">
-      <div class="hero-tag">📚 Belajar</div>
-      <div class="hero-title">Materi</div>
-      <div class="hero-sub">Pilih topik yang ingin dipelajari</div>
-      <div class="hero-deco">学</div>
+    <div class="hero" style="background:linear-gradient(135deg,#1DD1A1,#10AC84)">
+      <div class="hero-tag">💼 Kosakata</div>
+      <div class="hero-h">Dunia Pekerjaan</div>
+      <div class="hero-sub">Kuasai bahasa Mandarin untuk karir</div>
+      <div class="hero-emoji-bg">职</div>
     </div>
-    <div style="height:16px"></div>
+    <div style="height:14px"></div>
     <div class="lesson-list" id="lesson-list"></div>
   </div>
   <div id="mat-detail" style="display:none">
-    <div class="hero hero-mat ld-header">
+    <div class="ld-header" style="background:linear-gradient(135deg,#1DD1A1,#10AC84)">
       <button class="back-btn" onclick="backToList()">←</button>
-      <div><div class="ld-label">PELAJARAN</div><div class="ld-title" id="ld-title">—</div></div>
+      <div><div class="ld-label">KATEGORI</div><div class="ld-title" id="ld-title">—</div></div>
     </div>
     <div class="vocab-list" id="vocab-list"></div>
     <div style="padding:0 20px 24px">
@@ -319,549 +427,816 @@
   </div>
 </div>
 
-<!-- ═══ PROFIL ═══ -->
+<!-- ════════════ GRAMMAR ════════════ -->
+<div class="screen" id="screen-grammar">
+  <div class="hero grammar-hero">
+    <div class="hero-tag">📐 Tata Bahasa</div>
+    <div class="hero-h">Grammar Mandarin</div>
+    <div class="hero-sub">Struktur kalimat dengan contoh nyata</div>
+    <div class="hero-emoji-bg">语</div>
+  </div>
+  <div style="height:14px"></div>
+  <div class="gram-list" id="gram-list"></div>
+  <div style="height:10px"></div>
+</div>
+
+<!-- ════════════ BACA HANZI ════════════ -->
+<div class="screen" id="screen-baca">
+  <div id="baca-list">
+    <div class="hero baca-hero">
+      <div class="hero-tag">📖 Membaca</div>
+      <div class="hero-h">Latihan Baca Hanzi</div>
+      <div class="hero-sub">Artikel & cerita lengkap dalam Hanzi</div>
+      <div class="hero-emoji-bg">读</div>
+    </div>
+    <div style="height:14px"></div>
+    <div class="story-list" id="story-list"></div>
+    <div style="height:10px"></div>
+  </div>
+  <div id="baca-reading" style="display:none">
+    <div class="read-header" style="background:linear-gradient(135deg,#f093fb,#f5576c);border-radius:0 0 36px 36px;">
+      <button class="back-btn" onclick="backToBacaList()">←</button>
+      <div><div class="ld-label">MEMBACA</div><div class="ld-title" id="read-title">—</div></div>
+    </div>
+    <div class="read-slides" id="read-slides"></div>
+    <div class="slide-nav">
+      <button class="slide-btn slide-prev" id="slide-prev" onclick="changeSlide(-1)">← Sebelumnya</button>
+      <button class="slide-btn slide-next" id="slide-next" onclick="changeSlide(1)">Selanjutnya →</button>
+    </div>
+    <div class="slide-dots" id="slide-dots"></div>
+  </div>
+</div>
+
+<!-- ════════════ PROFIL ════════════ -->
 <div class="screen" id="screen-profil">
-  <div class="hero hero-prof" style="text-align:center">
+  <div class="hero profil-hero" style="text-align:center">
     <div class="profil-avatar">🐉</div>
-    <div class="profil-name" id="p-name">Pelajar Mandarin</div>
-    <div class="profil-level" id="p-level">⭐ Level Pemula</div>
+    <div style="font-size:21px;font-weight:900;color:#fff;" id="p-name">Pelajar Mandarin</div>
+    <div style="color:rgba(255,255,255,.85);font-size:12px;font-weight:700;margin-top:4px;" id="p-level">⭐ Level Pemula</div>
   </div>
   <div class="ps-grid">
     <div class="ps-card"><div class="ps-val" id="ps-xp">0</div><div class="ps-lbl">XP</div></div>
     <div class="ps-card"><div class="ps-val" id="ps-kata" style="color:var(--mint)">0</div><div class="ps-lbl">Hafal</div></div>
     <div class="ps-card"><div class="ps-val" id="ps-kuis" style="color:var(--sky)">0</div><div class="ps-lbl">Kuis</div></div>
   </div>
-  <div class="profil-section" style="margin-top:16px">
-    <div class="section-title" style="padding:0;margin-bottom:8px">Pencapaian</div>
-    <div class="profil-item">
-      <div class="profil-item-left"><div class="profil-item-ico">🔥</div><div class="profil-item-lbl">Streak</div></div>
-      <div class="profil-item-val" id="p-streak">0 hari</div>
-    </div>
-    <div class="profil-item">
-      <div class="profil-item-left"><div class="profil-item-ico">🏆</div><div class="profil-item-lbl">Skor Terbaik</div></div>
-      <div class="profil-item-val" id="p-best">-</div>
-    </div>
-    <div class="profil-item">
-      <div class="profil-item-left"><div class="profil-item-ico">📅</div><div class="profil-item-lbl">Bergabung</div></div>
-      <div class="profil-item-val" id="p-join">-</div>
-    </div>
+  <div class="profil-section" style="margin-top:14px">
+    <div class="sec-title" style="padding:0;margin-bottom:8px">Pencapaian</div>
+    <div class="p-item"><div class="p-item-left"><div class="p-ico">🔥</div><div class="p-lbl">Streak</div></div><div class="p-val" id="p-streak">0 hari</div></div>
+    <div class="p-item"><div class="p-item-left"><div class="p-ico">🏆</div><div class="p-lbl">Skor Terbaik</div></div><div class="p-val" id="p-best">-</div></div>
+    <div class="p-item"><div class="p-item-left"><div class="p-ico">📅</div><div class="p-lbl">Bergabung</div></div><div class="p-val" id="p-join">-</div></div>
   </div>
   <div class="profil-section">
-    <div class="section-title" style="padding:0;margin-bottom:8px">Pengaturan</div>
-    <div class="profil-item" onclick="editName()">
-      <div class="profil-item-left"><div class="profil-item-ico">✏️</div><div class="profil-item-lbl">Ubah Nama</div></div>
-      <div class="profil-item-val">→</div>
-    </div>
-    <div class="profil-item" onclick="resetData()">
-      <div class="profil-item-left"><div class="profil-item-ico">🔄</div><div class="profil-item-lbl">Reset Progres</div></div>
-      <div class="profil-item-val">→</div>
-    </div>
+    <div class="sec-title" style="padding:0;margin-bottom:8px">Pengaturan</div>
+    <div class="p-item" onclick="editName()"><div class="p-item-left"><div class="p-ico">✏️</div><div class="p-lbl">Ubah Nama</div></div><div class="p-val">→</div></div>
+    <div class="p-item" onclick="resetData()"><div class="p-item-left"><div class="p-ico">🔄</div><div class="p-lbl">Reset Progres</div></div><div class="p-val">→</div></div>
   </div>
 </div>
 
-<!-- ═══ NAV ═══ -->
+<!-- ════════════ BOTTOM NAV ════════════ -->
 <nav class="nav">
-  <button class="nav-btn active" id="nav-home" onclick="goScreen('screen-home')">
-    <div class="nav-icon">🏠</div>Beranda
-  </button>
-  <button class="nav-btn" id="nav-fc" onclick="goScreen('screen-fc')">
-    <div class="nav-icon">🃏</div>Flashcard
-  </button>
-  <button class="nav-btn" id="nav-quiz" onclick="goScreen('screen-quiz')">
-    <div class="nav-icon">🎯</div>Kuis
-  </button>
-  <button class="nav-btn" id="nav-materi" onclick="goScreen('screen-materi')">
-    <div class="nav-icon">📚</div>Materi
-  </button>
-  <button class="nav-btn" id="nav-profil" onclick="goScreen('screen-profil')">
-    <div class="nav-icon">👤</div>Profil
-  </button>
+  <button class="nav-btn active" id="nav-home" onclick="goScreen('screen-home')"><div class="nicon">🏠</div>Beranda</button>
+  <button class="nav-btn" id="nav-fc" onclick="goScreen('screen-fc')"><div class="nicon">🃏</div>Flashcard</button>
+  <button class="nav-btn" id="nav-quiz" onclick="goScreen('screen-quiz')"><div class="nicon">🎯</div>Kuis</button>
+  <button class="nav-btn" id="nav-materi" onclick="goScreen('screen-materi')"><div class="nicon">💼</div>Materi</button>
+  <button class="nav-btn" id="nav-grammar" onclick="goScreen('screen-grammar')"><div class="nicon">📐</div>Grammar</button>
+  <button class="nav-btn" id="nav-baca" onclick="goScreen('screen-baca')"><div class="nicon">📖</div>Baca</button>
 </nav>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════════
-// SEMUA VARIABEL GLOBAL DIDEKLARASIKAN DI SINI
-// ═══════════════════════════════════════════════
-var appState = {
-  xp: 0, kata: 0, kuis: 0, streak: 0,
-  bestScore: null, joinDate: null,
-  name: 'Pelajar Mandarin', lastVisit: null
-};
+// ═══════════════════════════════════════
+//  GLOBAL STATE
+// ═══════════════════════════════════════
+var S = { xp:0,kata:0,kuis:0,streak:0,bestScore:null,joinDate:null,name:'Pelajar Mandarin',lastVisit:null };
+var fcIndex=0, fcDeck=[], fcCat='pekerjaan_umum', fcFlipped=false;
+var quizDeck=[], quizIdx=0, quizScore=0, quizAnswered=false, quizMode='campuran', currentHz='';
+var currentSlide=0, currentStory=null;
 
-var fcIndex    = 0;
-var fcDeck     = [];
-var fcCategory = 'sapaan';
-var fcFlipped  = false;
+// ═══════════════════════════════════════
+//  UTILS
+// ═══════════════════════════════════════
+function showToast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},2200);
+}
+function speak(text){
+  if(!text||!window.speechSynthesis){showToast('Audio tidak didukung');return;}
+  try{
+    window.speechSynthesis.cancel();
+    var u=new SpeechSynthesisUtterance(text);
+    u.lang='zh-CN'; u.rate=0.85; u.pitch=1.0;
+    var vs=window.speechSynthesis.getVoices();
+    for(var i=0;i<vs.length;i++){if(vs[i].lang&&vs[i].lang.indexOf('zh')===0){u.voice=vs[i];break;}}
+    window.speechSynthesis.speak(u);
+    showToast('🔊 Memutar...');
+  }catch(e){showToast('Gagal memutar audio');}
+}
 
-var quizDeck      = [];
-var quizIdx       = 0;
-var quizScore     = 0;
-var quizAnswered  = false;
-var quizMode      = 'campuran';
-var currentHz     = '';
-
-// ═══════════════════════════════════════════════
-// DATA
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
+//  DATA — KOSAKATA PEKERJAAN
+// ═══════════════════════════════════════
 var VOCAB = {
-  sapaan: [
-    { hanzi:'你好',   pinyin:'Nǐ hǎo',       arti:'Halo / Hai',        contoh:'你好！我是学生。\n"Halo! Saya seorang pelajar."' },
-    { hanzi:'再见',   pinyin:'Zài jiàn',      arti:'Sampai jumpa',      contoh:'再见！明天见。\n"Sampai jumpa! Sampai besok."' },
-    { hanzi:'谢谢',   pinyin:'Xiè xiè',       arti:'Terima kasih',      contoh:'谢谢你的帮助。\n"Terima kasih atas bantuanmu."' },
-    { hanzi:'对不起', pinyin:'Duì bu qǐ',     arti:'Maaf',              contoh:'对不起，我迟到了。\n"Maaf, saya terlambat."' },
-    { hanzi:'没关系', pinyin:'Méi guān xi',   arti:'Tidak apa-apa',     contoh:'没关系，我等你。\n"Tidak apa-apa, saya menunggumu."' },
-    { hanzi:'请',     pinyin:'Qǐng',          arti:'Tolong / Silakan',  contoh:'请进。\n"Silakan masuk."' },
-    { hanzi:'好的',   pinyin:'Hǎo de',        arti:'Baik / Oke',        contoh:'好的，我明白了。\n"Baik, saya mengerti."' },
-    { hanzi:'早上好', pinyin:'Zǎo shàng hǎo', arti:'Selamat pagi',      contoh:'早上好！\n"Selamat pagi!"' },
+  pekerjaan_umum:[
+    {hanzi:'工作',pinyin:'Gōngzuò',arti:'Pekerjaan / Bekerja',contoh:'我喜欢我的工作。\n"Saya suka pekerjaan saya."'},
+    {hanzi:'公司',pinyin:'Gōngsī',arti:'Perusahaan',contoh:'这家公司很大。\n"Perusahaan ini sangat besar."'},
+    {hanzi:'老板',pinyin:'Lǎobǎn',arti:'Bos / Atasan',contoh:'我的老板很好。\n"Bos saya sangat baik."'},
+    {hanzi:'同事',pinyin:'Tóngshì',arti:'Rekan kerja',contoh:'我的同事很友好。\n"Rekan kerja saya sangat ramah."'},
+    {hanzi:'会议',pinyin:'Huìyì',arti:'Rapat / Meeting',contoh:'明天有会议。\n"Besok ada rapat."'},
+    {hanzi:'合同',pinyin:'Hétong',arti:'Kontrak',contoh:'请签合同。\n"Tolong tanda tangani kontrak."'},
+    {hanzi:'薪水',pinyin:'Xīnshuǐ',arti:'Gaji',contoh:'薪水每月发一次。\n"Gaji dibayar sebulan sekali."'},
+    {hanzi:'加班',pinyin:'Jiābān',arti:'Lembur',contoh:'今天需要加班。\n"Hari ini perlu lembur."'},
   ],
-  angka: [
-    { hanzi:'一', pinyin:'Yī',  arti:'Satu (1)',     contoh:'我有一个苹果。\n"Saya punya satu apel."' },
-    { hanzi:'二', pinyin:'Èr',  arti:'Dua (2)',      contoh:'两个人。\n"Dua orang."' },
-    { hanzi:'三', pinyin:'Sān', arti:'Tiga (3)',     contoh:'三点钟。\n"Pukul tiga."' },
-    { hanzi:'四', pinyin:'Sì',  arti:'Empat (4)',    contoh:'四月。\n"Bulan April."' },
-    { hanzi:'五', pinyin:'Wǔ',  arti:'Lima (5)',     contoh:'五个苹果。\n"Lima apel."' },
-    { hanzi:'六', pinyin:'Liù', arti:'Enam (6)',     contoh:'六月。\n"Bulan Juni."' },
-    { hanzi:'七', pinyin:'Qī',  arti:'Tujuh (7)',    contoh:'七天。\n"Tujuh hari."' },
-    { hanzi:'八', pinyin:'Bā',  arti:'Delapan (8)',  contoh:'八月。\n"Bulan Agustus."' },
-    { hanzi:'九', pinyin:'Jiǔ', arti:'Sembilan (9)', contoh:'九月。\n"Bulan September."' },
-    { hanzi:'十', pinyin:'Shí', arti:'Sepuluh (10)', contoh:'十个人。\n"Sepuluh orang."' },
+  jabatan:[
+    {hanzi:'经理',pinyin:'Jīnglǐ',arti:'Manajer',contoh:'他是销售经理。\n"Dia adalah manajer penjualan."'},
+    {hanzi:'总裁',pinyin:'Zǒngcái',arti:'CEO / Direktur Utama',contoh:'总裁来开会了。\n"CEO datang untuk rapat."'},
+    {hanzi:'员工',pinyin:'Yuángōng',arti:'Karyawan',contoh:'公司有一百个员工。\n"Perusahaan memiliki 100 karyawan."'},
+    {hanzi:'秘书',pinyin:'Mìshū',arti:'Sekretaris',contoh:'秘书很认真。\n"Sekretaris sangat teliti."'},
+    {hanzi:'工程师',pinyin:'Gōngchéngshī',arti:'Insinyur / Engineer',contoh:'我是软件工程师。\n"Saya adalah software engineer."'},
+    {hanzi:'医生',pinyin:'Yīshēng',arti:'Dokter',contoh:'她是一位医生。\n"Dia adalah seorang dokter."'},
+    {hanzi:'律师',pinyin:'Lǜshī',arti:'Pengacara',contoh:'我需要一位律师。\n"Saya butuh seorang pengacara."'},
+    {hanzi:'老师',pinyin:'Lǎoshī',arti:'Guru',contoh:'他是中文老师。\n"Dia adalah guru bahasa Mandarin."'},
   ],
-  keluarga: [
-    { hanzi:'妈妈', pinyin:'Māmā',   arti:'Ibu',              contoh:'我妈妈很漂亮。\n"Ibuku sangat cantik."' },
-    { hanzi:'爸爸', pinyin:'Bàba',   arti:'Ayah',             contoh:'爸爸在哪里？\n"Di mana ayah?"' },
-    { hanzi:'哥哥', pinyin:'Gēgē',   arti:'Kakak laki-laki',  contoh:'我哥哥是老师。\n"Kakak laki-lakiku adalah guru."' },
-    { hanzi:'姐姐', pinyin:'Jiějiě', arti:'Kakak perempuan',  contoh:'姐姐很聪明。\n"Kakak perempuan sangat pintar."' },
-    { hanzi:'弟弟', pinyin:'Dìdi',   arti:'Adik laki-laki',   contoh:'弟弟喜欢玩。\n"Adik laki-laki suka bermain."' },
-    { hanzi:'妹妹', pinyin:'Mèimei', arti:'Adik perempuan',   contoh:'妹妹很可爱。\n"Adik perempuan sangat lucu."' },
-    { hanzi:'爷爷', pinyin:'Yéyé',   arti:'Kakek',            contoh:'爷爷七十岁了。\n"Kakek sudah 70 tahun."' },
-    { hanzi:'奶奶', pinyin:'Nǎinai', arti:'Nenek',            contoh:'奶奶做的菜很好吃。\n"Masakan nenek sangat enak."' },
+  kantor:[
+    {hanzi:'办公室',pinyin:'Bàngōngshì',arti:'Kantor',contoh:'办公室在三楼。\n"Kantor ada di lantai tiga."'},
+    {hanzi:'电脑',pinyin:'Diànnǎo',arti:'Komputer',contoh:'我的电脑坏了。\n"Komputer saya rusak."'},
+    {hanzi:'打印机',pinyin:'Dǎyìnjī',arti:'Printer',contoh:'打印机没有纸了。\n"Printer tidak ada kertasnya."'},
+    {hanzi:'文件',pinyin:'Wénjiàn',arti:'Dokumen / File',contoh:'请发给我文件。\n"Tolong kirimkan dokumen ke saya."'},
+    {hanzi:'邮件',pinyin:'Yóujiàn',arti:'Email / Surat',contoh:'我收到你的邮件了。\n"Saya sudah terima email kamu."'},
+    {hanzi:'电话',pinyin:'Diànhuà',arti:'Telepon',contoh:'请接电话。\n"Tolong angkat telepon."'},
+    {hanzi:'报告',pinyin:'Bàogào',arti:'Laporan',contoh:'报告明天要交。\n"Laporan harus dikumpulkan besok."'},
+    {hanzi:'项目',pinyin:'Xiàngmù',arti:'Proyek',contoh:'这个项目很重要。\n"Proyek ini sangat penting."'},
   ],
-  makanan: [
-    { hanzi:'米饭', pinyin:'Mǐfàn',    arti:'Nasi',        contoh:'我喜欢吃米饭。\n"Saya suka makan nasi."' },
-    { hanzi:'水',   pinyin:'Shuǐ',     arti:'Air',         contoh:'我要喝水。\n"Saya ingin minum air."' },
-    { hanzi:'茶',   pinyin:'Chá',      arti:'Teh',         contoh:'喝茶吗？\n"Mau minum teh?"' },
-    { hanzi:'面条', pinyin:'Miàntiáo', arti:'Mie',         contoh:'我想吃面条。\n"Saya ingin makan mie."' },
-    { hanzi:'苹果', pinyin:'Píngguǒ',  arti:'Apel',        contoh:'苹果很甜。\n"Apel sangat manis."' },
-    { hanzi:'鸡肉', pinyin:'Jīròu',    arti:'Daging ayam', contoh:'我要鸡肉。\n"Saya mau daging ayam."' },
+  bisnis:[
+    {hanzi:'客户',pinyin:'Kèhù',arti:'Klien / Pelanggan',contoh:'客户很满意。\n"Klien sangat puas."'},
+    {hanzi:'产品',pinyin:'Chǎnpǐn',arti:'Produk',contoh:'我们的产品质量很好。\n"Kualitas produk kami sangat baik."'},
+    {hanzi:'市场',pinyin:'Shìchǎng',arti:'Pasar / Market',contoh:'市场竞争很激烈。\n"Persaingan pasar sangat ketat."'},
+    {hanzi:'利润',pinyin:'Lìrùn',arti:'Keuntungan / Profit',contoh:'今年利润增加了。\n"Keuntungan tahun ini meningkat."'},
+    {hanzi:'预算',pinyin:'Yùsuàn',arti:'Anggaran / Budget',contoh:'预算不够用。\n"Anggarannya tidak cukup."'},
+    {hanzi:'投资',pinyin:'Tóuzī',arti:'Investasi',contoh:'这是一个好的投资。\n"Ini adalah investasi yang baik."'},
+    {hanzi:'谈判',pinyin:'Tánpàn',arti:'Negosiasi',contoh:'谈判进行得很顺利。\n"Negosiasi berjalan lancar."'},
+    {hanzi:'签约',pinyin:'Qiānyuē',arti:'Menandatangani kontrak',contoh:'我们今天签约。\n"Kita tanda tangan kontrak hari ini."'},
+  ],
+  sapaan_kerja:[
+    {hanzi:'你好',pinyin:'Nǐ hǎo',arti:'Halo',contoh:'你好，我是新员工。\n"Halo, saya karyawan baru."'},
+    {hanzi:'请问',pinyin:'Qǐngwèn',arti:'Permisi / Boleh tanya',contoh:'请问，经理在吗？\n"Permisi, apakah manajer ada?"'},
+    {hanzi:'谢谢',pinyin:'Xiè xiè',arti:'Terima kasih',contoh:'谢谢你的帮助。\n"Terima kasih atas bantuannya."'},
+    {hanzi:'没问题',pinyin:'Méi wèntí',arti:'Tidak masalah / No problem',contoh:'没问题，我来做。\n"Tidak masalah, saya yang kerjakan."'},
+    {hanzi:'请稍等',pinyin:'Qǐng shāo děng',arti:'Tolong tunggu sebentar',contoh:'请稍等，我马上来。\n"Tolong tunggu sebentar, saya segera datang."'},
+    {hanzi:'我明白',pinyin:'Wǒ míngbái',arti:'Saya mengerti',contoh:'我明白你的意思。\n"Saya mengerti maksud kamu."'},
+    {hanzi:'有问题',pinyin:'Yǒu wèntí',arti:'Ada masalah',contoh:'这里有问题。\n"Ada masalah di sini."'},
+    {hanzi:'下班',pinyin:'Xiàbān',arti:'Pulang kerja',contoh:'几点下班？\n"Jam berapa pulang kerja?"'},
   ],
 };
 
 var LESSONS = [
-  { id:'sapaan',   icon:'👋', name:'Sapaan Dasar',     desc:'你好, 谢谢, 再见...', key:'sapaan',   done:false, color:'#FF6B6B' },
-  { id:'angka',    icon:'🔢', name:'Angka 1–10',        desc:'一, 二, 三...',       key:'angka',    done:false, color:'#FECA57' },
-  { id:'keluarga', icon:'👨‍👩‍👧', name:'Anggota Keluarga', desc:'妈妈, 爸爸, 哥哥...', key:'keluarga', done:false, color:'#1DD1A1' },
-  { id:'makanan',  icon:'🍜', name:'Makanan & Minuman', desc:'米饭, 水, 茶...',      key:'makanan',  done:false, color:'#54A0FF' },
+  {id:'pekerjaan_umum', icon:'💼', name:'Pekerjaan Umum',    desc:'工作, 公司, 会议...', key:'pekerjaan_umum', color:'#1DD1A1', tag:'Wajib'},
+  {id:'jabatan',        icon:'👔', name:'Jabatan & Profesi',  desc:'经理, 工程师, 医生...', key:'jabatan',  color:'#54A0FF', tag:'Penting'},
+  {id:'kantor',         icon:'🖥️', name:'Peralatan Kantor',   desc:'办公室, 电脑, 报告...', key:'kantor',   color:'#A29BFE', tag:'Dasar'},
+  {id:'bisnis',         icon:'📊', name:'Bahasa Bisnis',      desc:'客户, 市场, 投资...', key:'bisnis',     color:'#FF9F43', tag:'Lanjutan'},
+  {id:'sapaan_kerja',   icon:'🤝', name:'Sapaan di Tempat Kerja', desc:'请问, 谢谢, 没问题...', key:'sapaan_kerja', color:'#FD79A8', tag:'Praktis'},
 ];
 
 var WOTD = [
-  { hanzi:'你好', pinyin:'Nǐ hǎo',    arti:'Halo / Hai' },
-  { hanzi:'谢谢', pinyin:'Xiè xiè',   arti:'Terima kasih' },
-  { hanzi:'再见', pinyin:'Zài jiàn',  arti:'Sampai jumpa' },
-  { hanzi:'学习', pinyin:'Xuéxí',     arti:'Belajar' },
-  { hanzi:'朋友', pinyin:'Péngyǒu',   arti:'Teman' },
-  { hanzi:'快乐', pinyin:'Kuàilè',    arti:'Bahagia' },
-  { hanzi:'美丽', pinyin:'Měilì',     arti:'Cantik / Indah' },
+  {hanzi:'工作',pinyin:'Gōngzuò',arti:'Pekerjaan'},
+  {hanzi:'成功',pinyin:'Chénggōng',arti:'Sukses'},
+  {hanzi:'努力',pinyin:'Nǔlì',arti:'Kerja keras'},
+  {hanzi:'机会',pinyin:'Jīhuì',arti:'Kesempatan'},
+  {hanzi:'目标',pinyin:'Mùbiāo',arti:'Tujuan'},
+  {hanzi:'合作',pinyin:'Hézuò',arti:'Kerjasama'},
+  {hanzi:'进步',pinyin:'Jìnbù',arti:'Kemajuan'},
 ];
 
-// ═══════════════════════════════════════════════
-// UTILS
-// ═══════════════════════════════════════════════
-function showToast(msg) {
-  var t = document.getElementById('toast');
-  if (!t) return;
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(function() { t.classList.remove('show'); }, 2200);
-}
+// ═══════════════════════════════════════
+//  DATA — GRAMMAR
+// ═══════════════════════════════════════
+var GRAMMAR = [
+  {
+    id:1, color:'#6C5CE7', title:'Struktur Dasar: S + V + O',
+    sub:'Subjek + Kata Kerja + Objek',
+    explanation:'Bahasa Mandarin menggunakan pola dasar Subjek - Predikat - Objek, mirip dengan bahasa Indonesia. Yang membedakan adalah tidak ada konjugasi kata kerja — kata kerja tidak berubah berdasarkan subjek atau waktu.',
+    pattern:'主语 (Subjek) + 动词 (Kata Kerja) + 宾语 (Objek)',
+    examples:[
+      {hz:'我 喜欢 工作。',py:'Wǒ xǐhuān gōngzuò.',id:'Saya suka bekerja.'},
+      {hz:'他 看 报告。',py:'Tā kàn bàogào.',id:'Dia membaca laporan.'},
+      {hz:'经理 开 会议。',py:'Jīnglǐ kāi huìyì.',id:'Manajer memimpin rapat.'},
+    ],
+    note:'💡 Kata kerja Mandarin tidak berubah: "我喜欢" (saya suka) dan "他喜欢" (dia suka) — kata kerjanya SAMA.',
+  },
+  {
+    id:2, color:'#FF6B6B', title:'Negasi: 不 (bù) dan 没 (méi)',
+    sub:'Cara menyatakan "tidak" dan "belum"',
+    explanation:'"不" (bù) digunakan untuk menyangkal kebiasaan, keinginan, atau fakta umum. "没" (méi) digunakan untuk menyangkal bahwa sesuatu sudah terjadi (setara dengan "belum" atau "tidak pernah" dalam konteks lampau).',
+    pattern:'不 + Kata Kerja/Sifat  |  没 + 动词 (untuk lampau)',
+    examples:[
+      {hz:'我不喜欢加班。',py:'Wǒ bù xǐhuān jiābān.',id:'Saya tidak suka lembur.'},
+      {hz:'他不是经理。',py:'Tā bú shì jīnglǐ.',id:'Dia bukan manajer.'},
+      {hz:'我没看报告。',py:'Wǒ méi kàn bàogào.',id:'Saya belum baca laporan.'},
+      {hz:'合同还没签。',py:'Hétong hái méi qiān.',id:'Kontrak belum ditandatangani.'},
+    ],
+    note:'💡 Gunakan 不 untuk kebiasaan/keinginan. Gunakan 没 untuk kejadian yang belum/tidak terjadi.',
+  },
+  {
+    id:3, color:'#1DD1A1', title:'Pertanyaan dengan 吗 (ma)',
+    sub:'Mengubah kalimat biasa menjadi pertanyaan',
+    explanation:'Cara termudah membuat pertanyaan ya/tidak di Mandarin adalah dengan menambahkan 吗 di akhir kalimat. Tidak perlu mengubah urutan kata, cukup tambahkan 吗 dan ubah intonasi.',
+    pattern:'Kalimat pernyataan + 吗？',
+    examples:[
+      {hz:'你是经理吗？',py:'Nǐ shì jīnglǐ ma?',id:'Apakah kamu manajer?'},
+      {hz:'明天有会议吗？',py:'Míngtiān yǒu huìyì ma?',id:'Apakah besok ada rapat?'},
+      {hz:'合同签好了吗？',py:'Hétong qiān hǎo le ma?',id:'Apakah kontrak sudah ditandatangani?'},
+    ],
+    note:'💡 Jawaban: 是的/对 (ya) atau 不是/没有 (tidak). Contoh: 是的，我是经理。 (Ya, saya manajer.)',
+  },
+  {
+    id:4, color:'#FF9F43', title:'Kata Bantu Waktu: 了 (le)',
+    sub:'Menandai aksi yang sudah selesai',
+    explanation:'"了" (le) diletakkan setelah kata kerja untuk menandai bahwa suatu aksi sudah selesai atau terjadi. Ini bukan "lampau" seperti bahasa Inggris — 了 fokus pada "selesainya" sebuah aksi.',
+    pattern:'Subjek + Kata Kerja + 了 (+ Objek)',
+    examples:[
+      {hz:'我签了合同。',py:'Wǒ qiān le hétong.',id:'Saya sudah menandatangani kontrak.'},
+      {hz:'会议开始了。',py:'Huìyì kāishǐ le.',id:'Rapat sudah dimulai.'},
+      {hz:'他交了报告。',py:'Tā jiāo le bàogào.',id:'Dia sudah mengumpulkan laporan.'},
+    ],
+    note:'💡 了 tidak selalu berarti lampau — bisa juga untuk aksi yang baru saja terjadi atau perubahan situasi.',
+  },
+  {
+    id:5, color:'#A29BFE', title:'Menyatakan Kepemilikan: 的 (de)',
+    sub:'Seperti "milik" atau apostrof dalam bahasa Inggris',
+    explanation:'"的" (de) digunakan untuk menunjukkan kepemilikan atau hubungan. Polanya adalah: Pemilik + 的 + Benda yang dimiliki. Sangat sering digunakan dalam konteks pekerjaan.',
+    pattern:'Pemilik + 的 + Benda',
+    examples:[
+      {hz:'我的公司很大。',py:'Wǒ de gōngsī hěn dà.',id:'Perusahaan saya sangat besar.'},
+      {hz:'经理的报告在哪里？',py:'Jīnglǐ de bàogào zài nǎlǐ?',id:'Di mana laporan manajer?'},
+      {hz:'我们的客户很满意。',py:'Wǒmen de kèhù hěn mǎnyì.',id:'Klien kami sangat puas.'},
+    ],
+    note:'💡 Dalam percakapan sehari-hari, 的 kadang bisa dilesapkan: 我公司 (perusahaan saya) — tapi lebih formal dengan 的.',
+  },
+  {
+    id:6, color:'#FD79A8', title:'Kata Bantu Modal: 能/可以/要/想',
+    sub:'Bisa, boleh, harus, ingin',
+    explanation:'Kata bantu modal diletakkan di antara subjek dan kata kerja untuk menambahkan makna kemampuan, izin, keinginan, atau keharusan.',
+    pattern:'Subjek + Modal + Kata Kerja + Objek',
+    examples:[
+      {hz:'我能参加会议。',py:'Wǒ néng cānjiā huìyì.',id:'Saya bisa menghadiri rapat. (能 = bisa/mampu)'},
+      {hz:'你可以用电脑。',py:'Nǐ kěyǐ yòng diànnǎo.',id:'Kamu boleh menggunakan komputer. (可以 = boleh)'},
+      {hz:'我要交报告。',py:'Wǒ yào jiāo bàogào.',id:'Saya harus mengumpulkan laporan. (要 = harus/akan)'},
+      {hz:'我想加薪。',py:'Wǒ xiǎng jiā xīn.',id:'Saya ingin naik gaji. (想 = ingin)'},
+    ],
+    note:'💡 能 = kemampuan fisik/situasional. 可以 = izin/boleh. 要 = keharusan/rencana. 想 = keinginan.',
+  },
+];
 
-function speak(text) {
-  if (!text) return;
-  if (!window.speechSynthesis) { showToast('Audio tidak didukung di perangkat ini'); return; }
-  try {
-    window.speechSynthesis.cancel();
-    var u = new SpeechSynthesisUtterance(text);
-    u.lang = 'zh-CN';
-    u.rate = 0.85;
-    u.pitch = 1.0;
-    var voices = window.speechSynthesis.getVoices();
-    for (var i = 0; i < voices.length; i++) {
-      if (voices[i].lang && voices[i].lang.indexOf('zh') === 0) {
-        u.voice = voices[i];
-        break;
-      }
-    }
-    window.speechSynthesis.speak(u);
-    showToast('🔊 Memutar audio...');
-  } catch(e) {
-    showToast('Gagal memutar audio');
-  }
-}
+// ═══════════════════════════════════════
+//  DATA — CERITA BACA HANZI
+// ═══════════════════════════════════════
+var STORIES = [
+  {
+    id:'hari_pertama',
+    title:'第一天上班',
+    titleId:'Hari Pertama Kerja',
+    level:'Pemula',
+    levelColor:'#1DD1A1',
+    img:'🏢',
+    desc:'Cerita tentang karyawan baru di hari pertama bekerja',
+    slides:[
+      {
+        type:'hanzi',
+        content:'今天是我第一天上班。我很紧张，也很兴奋。我穿了正式的衣服，早早来到公司。',
+      },
+      {
+        type:'pinyin',
+        lines:[
+          {chars:['今','天','是','我','第','一','天','上','班','。'], pinyins:['Jīn','tiān','shì','wǒ','dì','yī','tiān','shàng','bān','。']},
+          {chars:['我','很','紧','张','，','也','很','兴','奋','。'], pinyins:['Wǒ','hěn','jǐn','zhāng','，','yě','hěn','xīng','fèn','。']},
+          {chars:['我','穿','了','正','式','的','衣','服','，'], pinyins:['Wǒ','chuān','le','zhèng','shì','de','yī','fu','，']},
+          {chars:['早','早','来','到','公','司','。'], pinyins:['zǎo','zǎo','lái','dào','gōng','sī','。']},
+        ],
+        explain:'Hari ini adalah hari pertama saya bekerja. Saya sangat gugup, tapi juga sangat bersemangat. Saya memakai pakaian formal dan datang ke perusahaan lebih awal.',
+      },
+      {
+        type:'hanzi',
+        content:'接待员带我去见经理。经理叫王先生，他很友好。他介绍了公司的规定和我的工作任务。',
+      },
+      {
+        type:'pinyin',
+        lines:[
+          {chars:['接','待','员','带','我','去','见','经','理','。'], pinyins:['Jiē','dài','yuán','dài','wǒ','qù','jiàn','jīng','lǐ','。']},
+          {chars:['经','理','叫','王','先','生','，','他','很','友','好','。'], pinyins:['Jīng','lǐ','jiào','Wáng','xiān','sheng','，','tā','hěn','yǒu','hǎo','。']},
+          {chars:['他','介','绍','了','公','司','的','规','定'], pinyins:['Tā','jiè','shào','le','gōng','sī','de','guī','dìng']},
+          {chars:['和','我','的','工','作','任','务','。'], pinyins:['hé','wǒ','de','gōng','zuò','rèn','wù','。']},
+        ],
+        explain:'Resepsionis membawa saya untuk bertemu manajer. Manajer bernama Pak Wang, dia sangat ramah. Dia memperkenalkan peraturan perusahaan dan tugas pekerjaan saya.',
+      },
+      {
+        type:'hanzi',
+        content:'我的同事们也很热情。他们帮我熟悉环境，教我使用办公软件。下班前，我感到很满意。',
+      },
+      {
+        type:'pinyin',
+        lines:[
+          {chars:['我','的','同','事','们','也','很','热','情','。'], pinyins:['Wǒ','de','tóng','shì','men','yě','hěn','rè','qíng','。']},
+          {chars:['他','们','帮','我','熟','悉','环','境','，'], pinyins:['Tā','men','bāng','wǒ','shú','xī','huán','jìng','，']},
+          {chars:['教','我','使','用','办','公','软','件','。'], pinyins:['jiāo','wǒ','shǐ','yòng','bàn','gōng','ruǎn','jiàn','。']},
+          {chars:['下','班','前','，','我','感','到','很','满','意','。'], pinyins:['Xià','bān','qián','，','wǒ','gǎn','dào','hěn','mǎn','yì','。']},
+        ],
+        explain:'Rekan-rekan kerja saya juga sangat antusias. Mereka membantu saya mengenal lingkungan dan mengajari saya menggunakan perangkat lunak kantor. Sebelum pulang kerja, saya merasa sangat puas.',
+      },
+    ],
+  },
+  {
+    id:'rapat_penting',
+    title:'重要的会议',
+    titleId:'Rapat Penting',
+    level:'Menengah',
+    levelColor:'#FF9F43',
+    img:'📊',
+    desc:'Dialog dalam rapat bisnis dengan klien',
+    slides:[
+      {
+        type:'hanzi',
+        content:'今天公司有一个重要的会议。我们要向客户介绍新产品。经理说："这次会议非常关键，大家要认真准备。"',
+      },
+      {
+        type:'pinyin',
+        lines:[
+          {chars:['今','天','公','司','有','一','个','重','要','的','会','议','。'], pinyins:['Jīn','tiān','gōng','sī','yǒu','yī','gè','zhòng','yào','de','huì','yì','。']},
+          {chars:['我','们','要','向','客','户','介','绍','新','产','品','。'], pinyins:['Wǒ','men','yào','xiàng','kè','hù','jiè','shào','xīn','chǎn','pǐn','。']},
+          {chars:['经','理','说','：'], pinyins:['Jīng','lǐ','shuō','：']},
+          {chars:['"','这','次','会','议','非','常','关','键','，'], pinyins:['"','Zhè','cì','huì','yì','fēi','cháng','guān','jiàn','，']},
+          {chars:['大','家','要','认','真','准','备','。','"'], pinyins:['dà','jiā','yào','rèn','zhēn','zhǔn','bèi','。','"']},
+        ],
+        explain:'Hari ini perusahaan memiliki rapat penting. Kami akan memperkenalkan produk baru kepada klien. Manajer berkata: "Rapat kali ini sangat krusial, semua orang harus mempersiapkan diri dengan serius."',
+      },
+      {
+        type:'hanzi',
+        content:'会议开始了。客户问："你们的产品有什么特点？"我自信地回答："我们的产品质量好，价格合理，服务也很好。"',
+      },
+      {
+        type:'pinyin',
+        lines:[
+          {chars:['会','议','开','始','了','。'], pinyins:['Huì','yì','kāi','shǐ','le','。']},
+          {chars:['客','户','问','：','"','你','们','的','产','品','有','什','么','特','点','？','"'], pinyins:['Kè','hù','wèn','：','"','Nǐ','men','de','chǎn','pǐn','yǒu','shén','me','tè','diǎn','？','"']},
+          {chars:['我','自','信','地','回','答','：'], pinyins:['Wǒ','zì','xìn','de','huí','dá','：']},
+          {chars:['"','我','们','的','产','品','质','量','好','，'], pinyins:['"','Wǒ','men','de','chǎn','pǐn','zhì','liàng','hǎo','，']},
+          {chars:['价','格','合','理','，','服','务','也','很','好','。','"'], pinyins:['jià','gé','hé','lǐ','，','fú','wù','yě','hěn','hǎo','。','"']},
+        ],
+        explain:'Rapat dimulai. Klien bertanya: "Apa keunggulan produk Anda?" Saya menjawab dengan percaya diri: "Produk kami berkualitas baik, harga wajar, dan layanannya juga sangat baik."',
+      },
+      {
+        type:'hanzi',
+        content:'最后，客户很满意，决定签合同。经理高兴地说："干得好！这次谈判非常成功！"',
+      },
+      {
+        type:'pinyin',
+        lines:[
+          {chars:['最','后','，','客','户','很','满','意','，'], pinyins:['Zuì','hòu','，','kè','hù','hěn','mǎn','yì','，']},
+          {chars:['决','定','签','合','同','。'], pinyins:['jué','dìng','qiān','hé','tong','。']},
+          {chars:['经','理','高','兴','地','说','：'], pinyins:['Jīng','lǐ','gāo','xìng','de','shuō','：']},
+          {chars:['"','干','得','好','！'], pinyins:['"','Gàn','de','hǎo','！']},
+          {chars:['这','次','谈','判','非','常','成','功','！','"'], pinyins:['Zhè','cì','tán','pàn','fēi','cháng','chéng','gōng','！','"']},
+        ],
+        explain:'Akhirnya, klien sangat puas dan memutuskan untuk menandatangani kontrak. Manajer berkata dengan gembira: "Kerja bagus! Negosiasi kali ini sangat sukses!"',
+      },
+    ],
+  },
+];
 
-// ═══════════════════════════════════════════════
-// STATE / STORAGE
-// ═══════════════════════════════════════════════
-function loadState() {
-  try {
-    var saved = localStorage.getItem('mandarin_v2');
-    if (saved) {
-      var parsed = JSON.parse(saved);
-      for (var k in parsed) { appState[k] = parsed[k]; }
-    }
-    if (!appState.joinDate) appState.joinDate = new Date().toLocaleDateString('id-ID');
+// ═══════════════════════════════════════
+//  STATE MANAGEMENT
+// ═══════════════════════════════════════
+function loadState(){
+  try{
+    var saved=localStorage.getItem('mandarin_v3');
+    if(saved){var p=JSON.parse(saved);for(var k in p){S[k]=p[k];}}
+    if(!S.joinDate) S.joinDate=new Date().toLocaleDateString('id-ID');
     checkStreak();
-  } catch(e) {}
+  }catch(e){}
+}
+function saveState(){ try{localStorage.setItem('mandarin_v3',JSON.stringify(S));}catch(e){} }
+function checkStreak(){
+  var today=new Date().toDateString();
+  if(S.lastVisit===today) return;
+  var yd=new Date(Date.now()-86400000).toDateString();
+  S.streak=(S.lastVisit===yd)?S.streak+1:1;
+  S.lastVisit=today; saveState();
 }
 
-function saveState() {
-  try { localStorage.setItem('mandarin_v2', JSON.stringify(appState)); } catch(e) {}
-}
-
-function checkStreak() {
-  var today = new Date().toDateString();
-  if (appState.lastVisit === today) return;
-  var yesterday = new Date(Date.now() - 86400000).toDateString();
-  appState.streak = (appState.lastVisit === yesterday) ? appState.streak + 1 : 1;
-  appState.lastVisit = today;
-  saveState();
-}
-
-// ═══════════════════════════════════════════════
-// NAVIGATION
-// ═══════════════════════════════════════════════
-var NAV_MAP = {
-  'screen-home':   'nav-home',
-  'screen-fc':     'nav-fc',
-  'screen-quiz':   'nav-quiz',
-  'screen-materi': 'nav-materi',
-  'screen-profil': 'nav-profil',
-};
-
-function goScreen(id) {
-  var screens = document.querySelectorAll('.screen');
-  for (var i = 0; i < screens.length; i++) screens[i].classList.remove('active');
+// ═══════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════
+var NAV_MAP={'screen-home':'nav-home','screen-fc':'nav-fc','screen-quiz':'nav-quiz','screen-materi':'nav-materi','screen-grammar':'nav-grammar','screen-baca':'nav-baca'};
+function goScreen(id){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
   document.getElementById(id).classList.add('active');
-
-  var navBtns = document.querySelectorAll('.nav-btn');
-  for (var j = 0; j < navBtns.length; j++) navBtns[j].classList.remove('active');
-  if (NAV_MAP[id]) document.getElementById(NAV_MAP[id]).classList.add('active');
-
-  window.scrollTo(0, 0);
-
-  if (id === 'screen-home')   updateHome();
-  if (id === 'screen-fc')     initFC();
-  if (id === 'screen-quiz')   initQuizScreen();
-  if (id === 'screen-materi') renderLessons();
-  if (id === 'screen-profil') renderProfil();
+  document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');});
+  if(NAV_MAP[id]) document.getElementById(NAV_MAP[id]).classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='screen-home') updateHome();
+  if(id==='screen-fc') initFC();
+  if(id==='screen-quiz') initQuiz();
+  if(id==='screen-materi') renderLessons();
+  if(id==='screen-grammar') renderGrammar();
+  if(id==='screen-baca') renderBaca();
+  if(id==='screen-profil') renderProfil();
 }
 
-// ═══════════════════════════════════════════════
-// HOME
-// ═══════════════════════════════════════════════
-function updateHome() {
-  document.getElementById('stat-streak').textContent = appState.streak;
-  document.getElementById('stat-kata').textContent   = appState.kata;
-  document.getElementById('stat-xp').textContent     = appState.xp;
-  var w = WOTD[new Date().getDate() % WOTD.length];
-  document.getElementById('wotd-hz').textContent = w.hanzi;
-  document.getElementById('wotd-py').textContent = w.pinyin;
-  document.getElementById('wotd-ar').textContent = w.arti;
+// ═══════════════════════════════════════
+//  HOME
+// ═══════════════════════════════════════
+function updateHome(){
+  document.getElementById('st-streak').textContent=S.streak;
+  document.getElementById('st-kata').textContent=S.kata;
+  document.getElementById('st-xp').textContent=S.xp;
+  var w=WOTD[new Date().getDate()%WOTD.length];
+  document.getElementById('wotd-hz').textContent=w.hanzi;
+  document.getElementById('wotd-py').textContent=w.pinyin;
+  document.getElementById('wotd-ar').textContent=w.arti;
+  document.getElementById('wotd-bg').textContent=w.hanzi;
 }
 
-// ═══════════════════════════════════════════════
-// FLASHCARD
-// ═══════════════════════════════════════════════
-function initFC() {
-  var cats = { sapaan:'👋 Sapaan', angka:'🔢 Angka', keluarga:'👨‍👩‍👧 Keluarga', makanan:'🍜 Makanan' };
-  var wrap = document.getElementById('fc-cats');
-  wrap.innerHTML = '';
-  var keys = Object.keys(cats);
-  for (var i = 0; i < keys.length; i++) {
-    (function(k) {
-      var p = document.createElement('button');
-      p.className = 'cat-pill' + (k === fcCategory ? ' active' : '');
-      p.textContent = cats[k];
-      p.onclick = function() { fcCategory = k; fcIndex = 0; fcFlipped = false; initFC(); };
-      wrap.appendChild(p);
-    })(keys[i]);
-  }
-  fcDeck = VOCAB[fcCategory].slice().sort(function() { return Math.random() - 0.5; });
-  fcIndex = 0;
-  fcFlipped = false;
-  renderFC();
+// ═══════════════════════════════════════
+//  FLASHCARD
+// ═══════════════════════════════════════
+function initFC(){
+  var cats={pekerjaan_umum:'💼 Umum',jabatan:'👔 Jabatan',kantor:'🖥️ Kantor',bisnis:'📊 Bisnis',sapaan_kerja:'🤝 Sapaan'};
+  var wrap=document.getElementById('fc-cats');
+  wrap.innerHTML='';
+  Object.keys(cats).forEach(function(k){
+    var p=document.createElement('button');
+    p.className='cat-pill'+(k===fcCat?' active':'');
+    p.textContent=cats[k];
+    p.onclick=function(){fcCat=k;fcIndex=0;fcFlipped=false;initFC();};
+    wrap.appendChild(p);
+  });
+  fcDeck=VOCAB[fcCat].slice().sort(function(){return Math.random()-.5;});
+  fcIndex=0; fcFlipped=false; renderFC();
 }
-
-function renderFC() {
-  var card = fcDeck[fcIndex];
+function renderFC(){
+  var card=fcDeck[fcIndex];
   document.getElementById('fc-card').classList.remove('flipped');
-  fcFlipped = false;
-  document.getElementById('fc-hz').textContent      = card.hanzi;
-  document.getElementById('fc-py').textContent      = card.pinyin;
-  document.getElementById('fc-meaning').textContent = card.arti;
-  document.getElementById('fc-ex').innerHTML        = card.contoh.replace('\n', '<br>');
-  var pct = Math.round(fcIndex / fcDeck.length * 100);
-  document.getElementById('fc-prog').style.width  = pct + '%';
-  document.getElementById('fc-label').textContent = 'Kartu ' + (fcIndex + 1) + ' dari ' + fcDeck.length;
+  fcFlipped=false;
+  document.getElementById('fc-hz').textContent=card.hanzi;
+  document.getElementById('fc-py').textContent=card.pinyin;
+  document.getElementById('fc-meaning').textContent=card.arti;
+  document.getElementById('fc-ex').innerHTML=card.contoh.replace('\n','<br>');
+  var catNames={pekerjaan_umum:'Pekerjaan',jabatan:'Jabatan',kantor:'Kantor',bisnis:'Bisnis',sapaan_kerja:'Sapaan Kerja'};
+  document.getElementById('fc-badge').textContent=catNames[fcCat]||'';
+  var pct=Math.round(fcIndex/fcDeck.length*100);
+  document.getElementById('fc-prog').style.width=pct+'%';
+  document.getElementById('fc-lbl').textContent='Kartu '+(fcIndex+1)+' dari '+fcDeck.length;
 }
-
-function flipCard() {
-  fcFlipped = !fcFlipped;
-  document.getElementById('fc-card').classList.toggle('flipped', fcFlipped);
-  if (fcFlipped) speak(fcDeck[fcIndex].hanzi);
+function flipCard(){
+  fcFlipped=!fcFlipped;
+  document.getElementById('fc-card').classList.toggle('flipped',fcFlipped);
+  if(fcFlipped) speak(fcDeck[fcIndex].hanzi);
 }
-
-function fcAnswer(correct) {
-  if (!fcFlipped) { showToast('Sentuh kartu dulu!'); return; }
-  if (correct) {
-    appState.xp += 10;
-    appState.kata++;
-    saveState();
-    showToast('✓ +10 XP 🎉');
-  } else {
-    showToast('Pelajari lagi ya! 💪');
-  }
+function fcAnswer(correct){
+  if(!fcFlipped){showToast('Sentuh kartu dulu!');return;}
+  if(correct){S.xp+=10;S.kata++;saveState();showToast('✓ +10 XP 🎉');}
+  else showToast('Pelajari lagi ya! 💪');
   fcIndex++;
-  if (fcIndex >= fcDeck.length) {
-    showToast('🎉 Semua kartu selesai!');
-    fcIndex = 0;
-    fcDeck = VOCAB[fcCategory].slice().sort(function() { return Math.random() - 0.5; });
-  }
-  setTimeout(renderFC, 300);
+  if(fcIndex>=fcDeck.length){showToast('🎉 Semua kartu selesai!');fcIndex=0;fcDeck=VOCAB[fcCat].slice().sort(function(){return Math.random()-.5;});}
+  setTimeout(renderFC,300);
 }
 
-// ═══════════════════════════════════════════════
-// KUIS
-// ═══════════════════════════════════════════════
-function initQuizScreen() {
-  // Reset tab visual
-  var tabs = ['campuran','hanzi','arti'];
-  for (var i = 0; i < tabs.length; i++) {
-    var el = document.getElementById('qtab-' + tabs[i]);
-    if (el) el.classList.remove('active');
-  }
-  var active = document.getElementById('qtab-' + quizMode);
-  if (active) active.classList.add('active');
+// ═══════════════════════════════════════
+//  KUIS
+// ═══════════════════════════════════════
+function initQuiz(){
+  ['campuran','hanzi','arti','kerja'].forEach(function(m){
+    var el=document.getElementById('qtab-'+m);
+    if(el) el.classList.toggle('active',m===quizMode);
+  });
   startQuiz();
 }
-
-function setMode(mode) {
-  quizMode = mode;
-  var tabs = ['campuran','hanzi','arti'];
-  for (var i = 0; i < tabs.length; i++) {
-    document.getElementById('qtab-' + tabs[i]).classList.remove('active');
-  }
-  document.getElementById('qtab-' + mode).classList.add('active');
+function setMode(mode){
+  quizMode=mode;
+  ['campuran','hanzi','arti','kerja'].forEach(function(m){
+    document.getElementById('qtab-'+m).classList.toggle('active',m===mode);
+  });
   startQuiz();
 }
-
-function startQuiz() {
-  var all = [];
-  var keys = Object.keys(VOCAB);
-  for (var i = 0; i < keys.length; i++) {
-    all = all.concat(VOCAB[keys[i]]);
+function startQuiz(){
+  var pool;
+  if(quizMode==='kerja'){
+    pool=Object.values(VOCAB).flat();
+  } else {
+    pool=Object.values(VOCAB).flat();
   }
-  quizDeck = all.slice().sort(function() { return Math.random() - 0.5; }).slice(0, 10);
-  quizIdx = 0;
-  quizScore = 0;
-  document.getElementById('quiz-play').style.display   = 'block';
-  document.getElementById('quiz-result').style.display = 'none';
+  quizDeck=pool.slice().sort(function(){return Math.random()-.5;}).slice(0,10);
+  quizIdx=0; quizScore=0;
+  document.getElementById('quiz-play').style.display='block';
+  document.getElementById('quiz-result').style.display='none';
   renderQuiz();
 }
-
-function renderQuiz() {
-  quizAnswered = false;
-  var q = quizDeck[quizIdx];
-  currentHz = q.hanzi;
-
-  var pct = Math.round(quizIdx / quizDeck.length * 100);
-  document.getElementById('quiz-prog').style.width  = pct + '%';
-  document.getElementById('quiz-count').textContent = 'Soal ' + (quizIdx + 1) + ' / ' + quizDeck.length;
-  document.getElementById('quiz-score').textContent = '⭐ ' + quizScore;
-
-  // Tentukan mode soal
+function renderQuiz(){
+  quizAnswered=false;
+  var q=quizDeck[quizIdx];
+  currentHz=q.hanzi;
+  var pct=Math.round(quizIdx/quizDeck.length*100);
+  document.getElementById('quiz-prog').style.width=pct+'%';
+  document.getElementById('quiz-count').textContent='Soal '+(quizIdx+1)+'/'+quizDeck.length;
+  document.getElementById('quiz-score').textContent='⭐ '+quizScore;
   var mode;
-  if (quizMode === 'campuran') mode = Math.random() > 0.5 ? 'tebak-arti' : 'tebak-hanzi';
-  else if (quizMode === 'hanzi') mode = 'tebak-hanzi';
-  else mode = 'tebak-arti';
-
-  var content  = document.getElementById('quiz-content');
-  var label    = document.getElementById('quiz-label');
-  var audioBtn = document.getElementById('quiz-audio');
-
-  if (mode === 'tebak-arti') {
-    label.textContent   = 'Apa arti karakter ini?';
-    content.innerHTML   = '<div class="quiz-q-hanzi">' + q.hanzi + '</div><div class="quiz-q-pin">' + q.pinyin + '</div>';
-    audioBtn.style.display = 'inline-flex';
+  if(quizMode==='campuran') mode=Math.random()>.5?'tebak-arti':'tebak-hanzi';
+  else if(quizMode==='hanzi') mode='tebak-hanzi';
+  else mode='tebak-arti';
+  var cont=document.getElementById('quiz-content');
+  var lbl=document.getElementById('quiz-lbl');
+  var abtn=document.getElementById('quiz-audio');
+  if(mode==='tebak-arti'){
+    lbl.textContent='Apa arti karakter ini?';
+    cont.innerHTML='<div class="quiz-q-hz">'+q.hanzi+'</div><div class="quiz-q-pin">'+q.pinyin+'</div>';
+    abtn.style.display='inline-flex';
   } else {
-    label.textContent   = 'Pilih karakter Hanzi yang benar:';
-    content.innerHTML   = '<div class="quiz-q-text">' + q.arti + '</div><div class="quiz-q-pin">' + q.pinyin + '</div>';
-    audioBtn.style.display = 'none';
+    lbl.textContent='Pilih karakter Hanzi yang benar:';
+    cont.innerHTML='<div class="quiz-q-txt">'+q.arti+'</div><div class="quiz-q-pin">'+q.pinyin+'</div>';
+    abtn.style.display='none';
   }
-
-  // Buat pilihan jawaban
-  var all = [];
-  var keys = Object.keys(VOCAB);
-  for (var i = 0; i < keys.length; i++) all = all.concat(VOCAB[keys[i]]);
-  var wrongs = all.filter(function(w) { return w.hanzi !== q.hanzi; })
-                  .sort(function() { return Math.random() - 0.5; })
-                  .slice(0, 3);
-  var opts = [q].concat(wrongs).sort(function() { return Math.random() - 0.5; });
-
-  var wrap = document.getElementById('quiz-opts');
-  wrap.innerHTML = '';
-  for (var j = 0; j < opts.length; j++) {
-    (function(opt) {
-      var btn = document.createElement('div');
-      btn.className = 'quiz-opt';
-      if (mode === 'tebak-arti') {
-        btn.textContent = opt.arti;
-      } else {
-        btn.innerHTML = '<div class="quiz-opt-hanzi">' + opt.hanzi + '</div>';
-      }
-      btn.onclick = function() { answerQuiz(btn, opt.hanzi === q.hanzi, q, mode); };
-      wrap.appendChild(btn);
-    })(opts[j]);
-  }
-
-  document.getElementById('quiz-next').style.display = 'none';
-  var nextBtn = document.getElementById('quiz-next').querySelector('button');
-  if (nextBtn) nextBtn.textContent = 'Soal Berikutnya →';
+  var all=Object.values(VOCAB).flat();
+  var wrongs=all.filter(function(w){return w.hanzi!==q.hanzi;}).sort(function(){return Math.random()-.5;}).slice(0,3);
+  var opts=[q].concat(wrongs).sort(function(){return Math.random()-.5;});
+  var wrap=document.getElementById('quiz-opts');
+  wrap.innerHTML='';
+  opts.forEach(function(opt){
+    var btn=document.createElement('div');
+    btn.className='quiz-opt';
+    if(mode==='tebak-arti'){
+      btn.textContent=opt.arti;
+    } else {
+      btn.innerHTML='<div class="quiz-opt-hz">'+opt.hanzi+'</div>';
+    }
+    btn.onclick=function(){answerQ(btn,opt.hanzi===q.hanzi,q,mode);};
+    wrap.appendChild(btn);
+  });
+  document.getElementById('quiz-next').style.display='none';
 }
-
-function answerQuiz(btn, correct, q, mode) {
-  if (quizAnswered) return;
-  quizAnswered = true;
-
-  if (correct) {
-    btn.classList.add('correct');
-    quizScore++;
-    appState.xp += 15;
-    speak(q.hanzi);
+function answerQ(btn,correct,q,mode){
+  if(quizAnswered) return;
+  quizAnswered=true;
+  if(correct){
+    btn.classList.add('correct'); quizScore++; S.xp+=15; speak(q.hanzi);
   } else {
     btn.classList.add('wrong');
-    // Highlight jawaban benar
-    var opts = document.querySelectorAll('.quiz-opt');
-    for (var i = 0; i < opts.length; i++) {
-      var txt = opts[i].querySelector('.quiz-opt-hanzi');
-      var match = txt ? txt.textContent === q.hanzi : opts[i].textContent === q.arti;
-      if (match) opts[i].classList.add('correct');
-    }
+    document.querySelectorAll('.quiz-opt').forEach(function(b){
+      var hzEl=b.querySelector('.quiz-opt-hz');
+      var match=hzEl?hzEl.textContent===q.hanzi:b.textContent===q.arti;
+      if(match) b.classList.add('correct');
+    });
   }
-
   saveState();
-  var nextWrap = document.getElementById('quiz-next');
-  nextWrap.style.display = 'block';
-  if (quizIdx >= quizDeck.length - 1) {
-    nextWrap.querySelector('button').textContent = 'Lihat Hasil 🏆';
-  }
+  var nw=document.getElementById('quiz-next');
+  nw.style.display='block';
+  if(quizIdx>=quizDeck.length-1) nw.querySelector('button').textContent='Lihat Hasil 🏆';
 }
-
-function nextQuestion() {
+function nextQ(){
   quizIdx++;
-  if (quizIdx >= quizDeck.length) showResult();
+  if(quizIdx>=quizDeck.length) showResult();
   else renderQuiz();
 }
-
-function showResult() {
-  appState.kuis++;
-  if (!appState.bestScore || quizScore > appState.bestScore) appState.bestScore = quizScore;
+function showResult(){
+  S.kuis++;
+  if(!S.bestScore||quizScore>S.bestScore) S.bestScore=quizScore;
   saveState();
-  document.getElementById('quiz-play').style.display   = 'none';
-  document.getElementById('quiz-result').style.display = 'block';
-  document.getElementById('res-score').textContent = quizScore + '/' + quizDeck.length;
-  var pct = Math.round(quizScore / quizDeck.length * 100);
-  var icon, label;
-  if (pct >= 90) { icon = '🏆'; label = 'Luar biasa! Kamu sangat hebat!'; }
-  else if (pct >= 70) { icon = '🎉'; label = 'Bagus! Terus semangat belajar!'; }
-  else if (pct >= 50) { icon = '💪'; label = 'Lumayan! Latihan lagi ya!'; }
-  else { icon = '📚'; label = 'Jangan menyerah, pelajari lagi!'; }
-  document.getElementById('res-icon').textContent  = icon;
-  document.getElementById('res-label').textContent = label;
+  document.getElementById('quiz-play').style.display='none';
+  document.getElementById('quiz-result').style.display='block';
+  document.getElementById('res-score').textContent=quizScore+'/'+quizDeck.length;
+  var pct=Math.round(quizScore/quizDeck.length*100);
+  var icon,lbl;
+  if(pct>=90){icon='🏆';lbl='Luar biasa! Kamu sangat hebat!';}
+  else if(pct>=70){icon='🎉';lbl='Bagus! Terus semangat belajar!';}
+  else if(pct>=50){icon='💪';lbl='Lumayan! Latihan lagi ya!';}
+  else{icon='📚';lbl='Jangan menyerah, pelajari lagi!';}
+  document.getElementById('res-icon').textContent=icon;
+  document.getElementById('res-lbl').textContent=lbl;
 }
 
-// ═══════════════════════════════════════════════
-// MATERI
-// ═══════════════════════════════════════════════
-function renderLessons() {
-  document.getElementById('mat-list').style.display   = 'block';
-  document.getElementById('mat-detail').style.display = 'none';
-  var list = document.getElementById('lesson-list');
-  list.innerHTML = '';
-  for (var i = 0; i < LESSONS.length; i++) {
-    (function(l) {
-      var div = document.createElement('div');
-      div.className = 'lesson-card';
-      div.innerHTML =
-        '<div class="lesson-icon" style="background:' + l.color + '22">' + l.icon + '</div>' +
-        '<div class="lesson-info">' +
-          '<div class="lesson-name">' + l.name + '</div>' +
-          '<div class="lesson-desc">' + l.desc + '</div>' +
-        '</div>' +
-        '<div class="lesson-arrow" style="color:' + (l.done ? 'var(--mint)' : 'var(--dark2)') + '">' + (l.done ? '✓' : '→') + '</div>';
-      div.onclick = function() { openLesson(l); };
-      list.appendChild(div);
-    })(LESSONS[i]);
+// ═══════════════════════════════════════
+//  MATERI
+// ═══════════════════════════════════════
+function renderLessons(){
+  document.getElementById('mat-list').style.display='block';
+  document.getElementById('mat-detail').style.display='none';
+  var list=document.getElementById('lesson-list');
+  list.innerHTML='';
+  LESSONS.forEach(function(l){
+    var div=document.createElement('div');
+    div.className='lesson-card';
+    div.innerHTML=
+      '<div class="l-icon" style="background:'+l.color+'22">'+l.icon+'</div>'+
+      '<div class="l-info">'+
+        '<div class="l-name">'+l.name+'</div>'+
+        '<div class="l-desc">'+l.desc+'</div>'+
+        '<span class="l-badge" style="background:'+l.color+'22;color:'+l.color+'">'+l.tag+'</span>'+
+      '</div>'+
+      '<div class="l-arrow" style="color:'+(l.done?'var(--mint)':'var(--dark2)')+'">'+( l.done?'✓':'→')+'</div>';
+    div.onclick=function(){openLesson(l);};
+    list.appendChild(div);
+  });
+}
+function openLesson(lesson){
+  document.getElementById('mat-list').style.display='none';
+  document.getElementById('mat-detail').style.display='block';
+  document.getElementById('ld-title').textContent=lesson.name;
+  var vlist=document.getElementById('vocab-list');
+  vlist.innerHTML='';
+  VOCAB[lesson.key].forEach(function(v){
+    var row=document.createElement('div');
+    row.className='vocab-row';
+    row.innerHTML=
+      '<div class="v-hz">'+v.hanzi+'</div>'+
+      '<div><div class="v-pin">'+v.pinyin+'</div><div class="v-art">'+v.arti+'</div></div>'+
+      '<button class="audio-btn" onclick="speak(\''+v.hanzi+'\')">🔊</button>';
+    vlist.appendChild(row);
+  });
+  lesson.done=true; window.scrollTo(0,0);
+}
+function backToList(){renderLessons();}
+
+// ═══════════════════════════════════════
+//  GRAMMAR
+// ═══════════════════════════════════════
+function renderGrammar(){
+  var list=document.getElementById('gram-list');
+  list.innerHTML='';
+  GRAMMAR.forEach(function(g){
+    var card=document.createElement('div');
+    card.className='gram-card';
+    var exHtml=g.examples.map(function(e){
+      return '<div class="gram-ex">'+
+        '<div class="gram-ex-hz">'+e.hz+'</div>'+
+        '<div class="gram-ex-py">'+e.py+'</div>'+
+        '<div class="gram-ex-id">→ '+e.id+'</div>'+
+        '</div>';
+    }).join('');
+    card.innerHTML=
+      '<div class="gram-card-top">'+
+        '<div class="gram-num" style="background:'+g.color+'">'+g.id+'</div>'+
+        '<div><div class="gram-title">'+g.title+'</div><div class="gram-sub">'+g.sub+'</div></div>'+
+        '<div class="gram-arrow">▾</div>'+
+      '</div>'+
+      '<div class="gram-detail" id="gd-'+g.id+'">'+
+        '<div class="gram-section">'+
+          '<div class="gram-section-title">📖 Penjelasan</div>'+
+          '<div class="gram-explanation">'+g.explanation+'</div>'+
+        '</div>'+
+        '<div class="gram-section">'+
+          '<div class="gram-section-title">📐 Pola Kalimat</div>'+
+          '<div class="gram-pattern">'+g.pattern+'</div>'+
+        '</div>'+
+        '<div class="gram-section">'+
+          '<div class="gram-section-title">✏️ Contoh Kalimat</div>'+
+          '<div class="gram-examples">'+exHtml+'</div>'+
+        '</div>'+
+        '<div class="gram-note">'+g.note+'</div>'+
+      '</div>';
+    card.querySelector('.gram-card-top').onclick=function(){
+      var det=document.getElementById('gd-'+g.id);
+      var arrow=card.querySelector('.gram-arrow');
+      var isOpen=det.classList.contains('open');
+      det.classList.toggle('open',!isOpen);
+      arrow.textContent=isOpen?'▾':'▴';
+    };
+    list.appendChild(card);
+  });
+}
+
+// ═══════════════════════════════════════
+//  BACA HANZI
+// ═══════════════════════════════════════
+function renderBaca(){
+  document.getElementById('baca-list').style.display='block';
+  document.getElementById('baca-reading').style.display='none';
+  var list=document.getElementById('story-list');
+  list.innerHTML='';
+  STORIES.forEach(function(s){
+    var card=document.createElement('div');
+    card.className='story-card';
+    card.innerHTML=
+      '<div class="story-card-img" style="background:linear-gradient(135deg,#f093fb22,#f5576c22)">'+
+        '<div class="story-card-img-bg">'+s.img+'</div>'+
+        '<div style="font-family:\'Noto Serif SC\',serif;font-size:36px;color:var(--dark);position:relative;z-index:1">'+s.title+'</div>'+
+      '</div>'+
+      '<div class="story-card-body">'+
+        '<div class="story-card-title">'+s.titleId+'</div>'+
+        '<div class="story-card-meta">'+
+          '<span class="story-tag" style="background:'+s.levelColor+'22;color:'+s.levelColor+'">'+s.level+'</span>'+
+          '<span style="font-size:10px;color:var(--dark2);font-weight:700">'+Math.ceil(s.slides.length/2)+' halaman</span>'+
+        '</div>'+
+        '<div class="story-card-desc">'+s.desc+'</div>'+
+      '</div>';
+    card.onclick=function(){openStory(s);};
+    list.appendChild(card);
+  });
+}
+function openStory(story){
+  currentStory=story; currentSlide=0;
+  document.getElementById('baca-list').style.display='none';
+  document.getElementById('baca-reading').style.display='block';
+  document.getElementById('read-title').textContent=story.titleId;
+  buildSlides(story);
+  window.scrollTo(0,0);
+}
+function buildSlides(story){
+  var wrap=document.getElementById('read-slides');
+  wrap.innerHTML='';
+  var dots=document.getElementById('slide-dots');
+  dots.innerHTML='';
+  story.slides.forEach(function(slide,i){
+    var div=document.createElement('div');
+    div.className='slide'+(i===0?' active':'');
+    div.id='slide-'+i;
+    if(slide.type==='hanzi'){
+      div.innerHTML='<div class="slide-hz">'+slide.content+'</div>'+
+        '<div style="text-align:center;margin-top:12px"><button class="audio-btn" onclick="speak(\''+slide.content.replace(/[。，！？]/g,'').substring(0,20)+'\')">🔊 Dengarkan Bagian Ini</button></div>';
+    } else {
+      var lineHtml=slide.lines.map(function(line){
+        var units=line.chars.map(function(c,ci){
+          if(c==='。'||c===','||c==='，'||c==='！'||c==='？'||c==='"'||c==='"'||c===':'||c==='：'){
+            return '<span style="font-family:\'Noto Serif SC\',serif;font-size:18px">'+c+'</span>';
+          }
+          return '<div class="pinyin-unit"><div class="p-py">'+(line.pinyins[ci]||'')+'</div><div class="p-hz">'+c+'</div></div>';
+        }).join('');
+        return '<div class="pinyin-line">'+units+'</div>';
+      }).join('');
+      div.innerHTML=
+        '<div class="slide-pinyin-wrap">'+
+          '<div class="slide-pinyin-title">📖 Pinyin & Karakter</div>'+
+          lineHtml+
+        '</div>'+
+        '<div class="slide-explain">'+
+          '<div class="slide-explain-title">💬 Terjemahan</div>'+
+          '<div class="slide-explain-txt">'+slide.explain+'</div>'+
+        '</div>';
+    }
+    wrap.appendChild(div);
+    var dot=document.createElement('div');
+    dot.className='slide-dot'+(i===0?' active':'');
+    dots.appendChild(dot);
+  });
+  updateSlideNav(story);
+}
+function changeSlide(dir){
+  if(!currentStory) return;
+  var newIdx=currentSlide+dir;
+  if(newIdx<0||newIdx>=currentStory.slides.length) return;
+  document.getElementById('slide-'+currentSlide).classList.remove('active');
+  document.querySelectorAll('.slide-dot')[currentSlide].classList.remove('active');
+  currentSlide=newIdx;
+  document.getElementById('slide-'+currentSlide).classList.add('active');
+  document.querySelectorAll('.slide-dot')[currentSlide].classList.add('active');
+  updateSlideNav(currentStory);
+  window.scrollTo(0,0);
+}
+function updateSlideNav(story){
+  document.getElementById('slide-prev').style.opacity=currentSlide===0?'0.3':'1';
+  document.getElementById('slide-prev').disabled=currentSlide===0;
+  var nextBtn=document.getElementById('slide-next');
+  if(currentSlide===story.slides.length-1){
+    nextBtn.textContent='Selesai ✓';
+    nextBtn.onclick=function(){backToBacaList();showToast('🎉 Selesai membaca!');S.xp+=20;saveState();};
+  } else {
+    nextBtn.textContent='Selanjutnya →';
+    nextBtn.onclick=function(){changeSlide(1);};
+  }
+}
+function backToBacaList(){
+  document.getElementById('baca-list').style.display='block';
+  document.getElementById('baca-reading').style.display='none';
+}
+
+// ═══════════════════════════════════════
+//  PROFIL
+// ═══════════════════════════════════════
+function renderProfil(){
+  document.getElementById('p-name').textContent=S.name;
+  document.getElementById('ps-xp').textContent=S.xp;
+  document.getElementById('ps-kata').textContent=S.kata;
+  document.getElementById('ps-kuis').textContent=S.kuis;
+  document.getElementById('p-streak').textContent=S.streak+' hari';
+  document.getElementById('p-best').textContent=S.bestScore!==null?S.bestScore+'/10':'-';
+  document.getElementById('p-join').textContent=S.joinDate||'-';
+  var levels=[[0,'Pemula'],[100,'Dasar'],[300,'Menengah'],[700,'Mahir'],[1500,'Master']];
+  var lv='Pemula';
+  for(var i=0;i<levels.length;i++){if(S.xp>=levels[i][0])lv=levels[i][1];}
+  document.getElementById('p-level').textContent='⭐ Level '+lv;
+}
+function editName(){
+  var n=prompt('Masukkan nama kamu:',S.name);
+  if(n&&n.trim()){S.name=n.trim();saveState();renderProfil();}
+}
+function resetData(){
+  if(confirm('Reset semua progres? Data tidak bisa dikembalikan.')){
+    S.xp=0;S.kata=0;S.kuis=0;S.streak=0;S.bestScore=null;S.lastVisit=null;
+    saveState();renderProfil();showToast('Progres direset ✅');
   }
 }
 
-function openLesson(lesson) {
-  document.getElementById('mat-list').style.display   = 'none';
-  document.getElementById('mat-detail').style.display = 'block';
-  document.getElementById('ld-title').textContent = lesson.name;
-  var vlist = document.getElementById('vocab-list');
-  vlist.innerHTML = '';
-  var words = VOCAB[lesson.key];
-  for (var i = 0; i < words.length; i++) {
-    (function(v) {
-      var row = document.createElement('div');
-      row.className = 'vocab-row';
-      row.innerHTML =
-        '<div class="vocab-hanzi">' + v.hanzi + '</div>' +
-        '<div><div class="vocab-pin">' + v.pinyin + '</div><div class="vocab-arti">' + v.arti + '</div></div>' +
-        '<button class="audio-btn" onclick="speak(\'' + v.hanzi + '\')">🔊</button>';
-      vlist.appendChild(row);
-    })(words[i]);
-  }
-  lesson.done = true;
-  window.scrollTo(0, 0);
-}
-
-function backToList() { renderLessons(); }
-
-// ═══════════════════════════════════════════════
-// PROFIL
-// ═══════════════════════════════════════════════
-function renderProfil() {
-  document.getElementById('p-name').textContent  = appState.name;
-  document.getElementById('ps-xp').textContent   = appState.xp;
-  document.getElementById('ps-kata').textContent = appState.kata;
-  document.getElementById('ps-kuis').textContent = appState.kuis;
-  document.getElementById('p-streak').textContent = appState.streak + ' hari';
-  document.getElementById('p-best').textContent  = appState.bestScore !== null ? appState.bestScore + '/10' : '-';
-  document.getElementById('p-join').textContent  = appState.joinDate || '-';
-  var levels = [[0,'Pemula'],[100,'Dasar'],[300,'Menengah'],[700,'Mahir'],[1500,'Master']];
-  var lv = 'Pemula';
-  for (var i = 0; i < levels.length; i++) { if (appState.xp >= levels[i][0]) lv = levels[i][1]; }
-  document.getElementById('p-level').textContent = '⭐ Level ' + lv;
-}
-
-function editName() {
-  var n = prompt('Masukkan nama kamu:', appState.name);
-  if (n && n.trim()) { appState.name = n.trim(); saveState(); renderProfil(); }
-}
-
-function resetData() {
-  if (confirm('Reset semua progres? Data tidak bisa dikembalikan.')) {
-    appState.xp = 0; appState.kata = 0; appState.kuis = 0;
-    appState.streak = 0; appState.bestScore = null; appState.lastVisit = null;
-    saveState(); renderProfil(); showToast('Progres direset ✅');
-  }
-}
-
-// ═══════════════════════════════════════════════
-// INIT — dijalankan paling terakhir
-// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════
 loadState();
 updateHome();
 </script>
